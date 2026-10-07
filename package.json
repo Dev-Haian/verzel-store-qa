@@ -1,0 +1,20 @@
+{
+  "name": "verzel-store-qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Teste técnico de QA: validação de cupom de desconto e frete grátis na Verzel Store",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --project=ui",
+    "test:api": "playwright test --project=api",
+    "test:headed": "playwright test --project=ui --headed",
+    "report": "playwright show-report"
+  },
+  "author": "Haian Vilas Boas",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}
