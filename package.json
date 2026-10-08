@@ -4,10 +4,11 @@
   "private": true,
   "description": "Teste técnico de QA: validação de cupom de desconto e frete grátis na Verzel Store",
   "scripts": {
-    "test": "playwright test",
+    "test": "npm run test:ui && npm run test:api",
     "test:ui": "playwright test --project=ui",
-    "test:api": "playwright test --project=api",
     "test:headed": "playwright test --project=ui --headed",
+    "test:api": "newman run postman/verzel-store.postman_collection.json -e postman/verzel-store.postman_environment.json --delay-request 150 -r cli,htmlextra,json --reporter-htmlextra-export reports/newman.html --reporter-json-export reports/newman.json --reporter-htmlextra-title \"Verzel Store · API (VZS-142)\"",
+    "evidencias": "EVIDENCIAS=1 playwright test --project=ui",
     "report": "playwright show-report"
   },
   "author": "Haian Vilas Boas",
@@ -15,6 +16,8 @@
   "devDependencies": {
     "@playwright/test": "^1.48.0",
     "@types/node": "^20.0.0",
+    "newman": "^6.2.2",
+    "newman-reporter-htmlextra": "^1.23.1",
     "typescript": "^5.4.0"
   }
 }

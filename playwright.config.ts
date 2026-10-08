@@ -21,11 +21,11 @@ export default defineConfig({
     {
       name: 'ui',
       testDir: './tests/ui',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'api',
-      testDir: './tests/api',
+      use: {
+        ...devices['Desktop Chrome'],
+        // Permite apontar para um Chromium já instalado (ex.: PW_CHROMIUM_PATH=/caminho/chrome).
+        launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {},
+      },
     },
   ],
 });

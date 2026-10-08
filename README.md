@@ -1,6 +1,6 @@
 # Verzel Store · Teste técnico de QA
 
-Validação da entrega **cupom de desconto + frete grátis** da Verzel Store, feita como teste técnico para a vaga de QA Júnior na Verzel.
+Validação da entrega **VZS-142 · cupom de desconto + frete grátis** da Verzel Store, feita como teste técnico para a vaga de QA Júnior na Verzel.
 
 | | |
 |---|---|
@@ -8,6 +8,19 @@ Validação da entrega **cupom de desconto + frete grátis** da Verzel Store, fe
 | **Documentação da entrega** | https://verzel-store.qa-test-verzel-store.workers.dev/documentacao |
 | **API** | https://verzel-store.qa-test-verzel-store.workers.dev/api |
 | **Autor** | Haian Vilas Boas · [LinkedIn](https://www.linkedin.com/in/haian-vilas-boas-806647221) · [GitHub](https://github.com/Dev-Haian) |
+
+## Resumo da execução
+
+| Cenários | ✅ Passou | ❌ Falhou | ⛔ Bloqueado | Bugs (crítico / alto / médio / baixo) |
+|---|---|---|---|---|
+| 32 | 27 | 5 | 0 | 0 / 2 / 1 / 3 |
+
+**Recomendação: a entrega não deve ir para produção antes da correção dos dois bugs de severidade alta.**
+
+- **[BUG01](docs/04-bugs.md#bug01):** o frete de R$ 19,90 é cobrado quando o subtotal é **exatamente R$ 200,00**. A regra diz "a partir de R$ 200,00, inclusive". O erro está na API e chega ao pedido.
+- **[BUG02](docs/04-bugs.md#bug02):** a API aceita **mais de 5 unidades** por produto, e o pedido é confirmado. A tela bloqueia, mas a regra vale também para a API.
+
+O restante do cupom e do frete está correto nas duas camadas: desconto sobre o subtotal, maiúsculas e espaços, cupom inválido e expirado, um cupom por vez, frete calculado antes do desconto, desconto fora do frete, arredondamento e os valores da tela iguais aos da API. Também foram encontrados 4 bugs de severidade média e baixa e 7 observações.
 
 ## Onde encontrar cada entrega
 
@@ -17,17 +30,11 @@ Validação da entrega **cupom de desconto + frete grátis** da Verzel Store, fe
 | Cenários de teste (Gherkin) | [docs/02-cenarios.feature](docs/02-cenarios.feature) |
 | Execução dos testes manuais e exploratórios, com resultados | [docs/03-execucao.md](docs/03-execucao.md) |
 | Report dos bugs encontrados | [docs/04-bugs.md](docs/04-bugs.md) |
-| Evidências da execução | [docs/evidencias/](docs/evidencias/) |
-| Automação com Playwright | [tests/](tests/) |
+| Evidências da execução | [docs/evidencias/](docs/evidencias/): prints da interface em `ui/` e relatório da API em `api/relatorio-newman.html` |
+| Automação da interface (Playwright) | [tests/ui/](tests/ui/) |
+| Automação da API (Postman) | [postman/](postman/) |
+| Resultados em formato estruturado | [docs/resultados.json](docs/resultados.json) |
 | Uso de IA | [docs/05-uso-de-ia.md](docs/05-uso-de-ia.md) |
-
-## Resumo da execução
-
-> Preencher ao final: total de cenários, quantos passaram/falharam/bloqueados, quantidade de bugs por severidade e a principal recomendação (a entrega pode ou não ir para produção?).
-
-| Cenários executados | Passou | Falhou | Bloqueado | Bugs (crítico / alto / médio / baixo) |
-|---|---|---|---|---|
-| – | – | – | – | – / – / – / – |
 
 ## Como rodar a automação
 
@@ -39,32 +46,60 @@ cd verzel-store-qa
 npm install
 npx playwright install chromium
 
-npm test                 # roda todos os testes (UI + API)
-npm run test:ui          # só testes de interface
-npm run test:api         # só testes de API
-npm run test:headed      # abre o navegador para acompanhar
-npm run report           # abre o relatório HTML da última execução
+npm test                 # interface (Playwright) e depois API (Newman)
+npm run test:ui          # só a interface
+npm run test:api         # só a API (collection do Postman via Newman)
+npm run test:headed      # interface com o navegador aberto
+npm run report           # abre o relatório HTML do Playwright
+npm run evidencias       # roda a interface e salva os prints em docs/evidencias/ui
 ```
 
-A URL da loja pode ser trocada pela variável `BASE_URL`:
+O relatório da API fica em `reports/newman.html` depois do `npm run test:api`.
+
+### No Postman
+
+1. Importe `postman/verzel-store.postman_collection.json` e `postman/verzel-store.postman_environment.json`.
+2. Selecione o environment **Verzel Store · QA**.
+3. Rode a collection pelo **Collection Runner**.
+
+Cada requisição tem o ID do cenário (`CTxx`) no nome.
+
+### Resultado esperado da automação
+
+| Suíte | Total | Resultado |
+|---|---|---|
+| Playwright (interface) | 17 testes | 16 passam e 1 **falha esperada** (`test.fail`) que documenta o BUG01. Se o bug for corrigido, o teste passa a acusar e a marcação deve ser retirada. |
+| Postman/Newman (API) | 46 requisições · 272 asserções | 39 passam. As 7 que falham são as marcadas com `[BUG01]`, `[BUG02]`, `[BUG04]` e `[BUG05]` no nome: elas falham **porque os bugs existem**. |
+
+### Trocar a URL da loja
 
 ```bash
-BASE_URL=https://outra-url npm test
+BASE_URL=https://outra-url npm run test:ui
+npx newman run postman/verzel-store.postman_collection.json --env-var baseUrl=https://outra-url
 ```
 
-Os testes também rodam no **GitHub Actions** a cada push ([.github/workflows/playwright.yml](.github/workflows/playwright.yml)), e o relatório fica disponível como artefato da execução.
+### CI
+
+Os testes rodam no **GitHub Actions** a cada push ([.github/workflows/playwright.yml](.github/workflows/playwright.yml)). Os relatórios do Playwright e do Newman ficam disponíveis como artefatos da execução. O passo da API não derruba o pipeline enquanto os bugs conhecidos estiverem abertos.
 
 ### Estrutura
 
 ```
-├── docs/                    ← análise, cenários, execução, bugs, evidências e uso de IA
-├── tests/
-│   ├── ui/                  ← testes E2E na interface da loja
-│   └── api/                 ← testes direto nos endpoints da API
+├── docs/
+│   ├── 01-analise-da-documentacao.md   ← regras, API, ambiguidades e estratégia
+│   ├── 02-cenarios.feature             ← 32 cenários em Gherkin com rastreabilidade
+│   ├── 03-execucao.md                  ← resultado por cenário, sessões exploratórias, tela × API
+│   ├── 04-bugs.md                      ← 6 bugs e 7 observações
+│   ├── 05-uso-de-ia.md
+│   ├── resultados.json                 ← mesmos resultados em JSON
+│   └── evidencias/                     ← prints (ui/) e relatório Newman (api/)
+├── tests/ui/                           ← Playwright + TypeScript
+│   └── support/loja.ts                 ← page object da loja
+├── postman/                            ← collection e environment
 ├── playwright.config.ts
-└── .github/workflows/       ← CI
+└── .github/workflows/                  ← CI
 ```
 
 ## Fora do escopo
 
-Conforme as regras do teste, **não** foram feitos testes de carga, estresse ou segurança, porque o ambiente é compartilhado com outros candidatos.
+Conforme as regras do teste, **não** foram feitos testes de carga, estresse ou segurança, porque o ambiente é compartilhado com outros candidatos. As chamadas automáticas usam intervalo entre requisições e no máximo 2 navegadores em paralelo.

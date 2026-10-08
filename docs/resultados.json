@@ -1,0 +1,601 @@
+{
+  "projeto": "Verzel Store · Cupom de desconto e frete grátis",
+  "card": "VZS-142",
+  "versao": "2.3.0",
+  "ambiente": "https://verzel-store.qa-test-verzel-store.workers.dev",
+  "executadoEm": "2026-10-08",
+  "executadoPor": "Haian Vilas Boas",
+  "resumo": {
+    "cenarios": 32,
+    "passou": 27,
+    "falhou": 5,
+    "bloqueado": 0,
+    "bugs": {
+      "total": 6,
+      "critica": 0,
+      "alta": 2,
+      "media": 1,
+      "baixa": 3
+    },
+    "observacoes": 7
+  },
+  "automacao": {
+    "playwright": {
+      "testes": 17,
+      "passou": 16,
+      "falhaEsperada": 1,
+      "nota": "CT12 marcado com test.fail enquanto o BUG01 existir"
+    },
+    "postman": {
+      "requisicoes": 46,
+      "assercoes": 272,
+      "assercoesFalharam": 25,
+      "requisicoesFalharam": 7,
+      "nota": "As 7 requisições que falham são as marcadas com [BUG01], [BUG02], [BUG04] e [BUG05]"
+    }
+  },
+  "cenarios": [
+    {
+      "id": "CT01",
+      "funcionalidade": "Cupom",
+      "titulo": "Cupom válido aplica 10% sobre o subtotal",
+      "regra": "CA01",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT01_cupom_valido.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT02",
+      "funcionalidade": "Cupom",
+      "titulo": "Código não diferencia maiúsculas de minúsculas",
+      "regra": "CA02",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT02_cupom_normalizado.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT03",
+      "funcionalidade": "Cupom",
+      "titulo": "Espaços no início e no fim são ignorados",
+      "regra": "CA02",
+      "prioridade": "Média",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT03_cupom_normalizado.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT04",
+      "funcionalidade": "Cupom",
+      "titulo": "Espaço no meio do código torna o cupom inválido",
+      "regra": "CA02",
+      "prioridade": "Baixa",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT05",
+      "funcionalidade": "Cupom",
+      "titulo": "Cupom inexistente mostra \"Cupom inválido.\"",
+      "regra": "CA03",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT05_cupom_xpto.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT06",
+      "funcionalidade": "Cupom",
+      "titulo": "Cupom expirado mostra \"Cupom expirado.\"",
+      "regra": "CA04",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT06_cupom_verao2026.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT07",
+      "funcionalidade": "Cupom",
+      "titulo": "Campo vazio pede para informar um cupom",
+      "regra": "CA03",
+      "prioridade": "Baixa",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT07_cupom_vazio.png"
+      ]
+    },
+    {
+      "id": "CT08",
+      "funcionalidade": "Cupom",
+      "titulo": "Apenas um cupom por vez",
+      "regra": "CA05",
+      "prioridade": "Alta",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT08_um_cupom_por_vez.png"
+      ]
+    },
+    {
+      "id": "CT09",
+      "funcionalidade": "Cupom",
+      "titulo": "Remover o cupom e aplicar outro",
+      "regra": "CA05",
+      "prioridade": "Média",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT09_trocar_cupom.png"
+      ]
+    },
+    {
+      "id": "CT10",
+      "funcionalidade": "Cupom",
+      "titulo": "Carrinho sem cupom não tem desconto",
+      "regra": "CA01",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT11",
+      "funcionalidade": "Cupom",
+      "titulo": "Pedido com cupom inválido ou expirado é recusado (422)",
+      "regra": "CA03, CA04",
+      "prioridade": "Alta",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT12",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Valor-limite do frete grátis (R$ 199,80 / 200,00 / 219,80)",
+      "regra": "CA06",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG01"
+      ],
+      "evidencias": [
+        "docs/evidencias/ui/CT12_BUG01_frete_200.png",
+        "docs/evidencias/ui/BUG01_200_com_cupom.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT13",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Abaixo de R$ 200,00 informa quanto falta",
+      "regra": "CA07",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT13_faltante_frete.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT14",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Frete grátis usa o subtotal antes do desconto",
+      "regra": "CA08",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT14_frete_antes_do_desconto.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT15",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Desconto não incide sobre o frete",
+      "regra": "CA09",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT16",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Fórmula do total em 40 carrinhos aleatórios",
+      "regra": "CA01, CA06, CA09",
+      "prioridade": "Alta",
+      "camadas": "API",
+      "automacao": "Script",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": []
+    },
+    {
+      "id": "CT17",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Arredondamento em 2 casas decimais",
+      "regra": "CA11",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT18",
+      "funcionalidade": "Quantidade",
+      "titulo": "Interface limita 5 unidades por produto",
+      "regra": "CA10",
+      "prioridade": "Alta",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT18_limite_vitrine.png",
+        "docs/evidencias/ui/CT18_limite_carrinho.png"
+      ]
+    },
+    {
+      "id": "CT19",
+      "funcionalidade": "Quantidade",
+      "titulo": "API recusa mais de 5 unidades",
+      "regra": "CA10",
+      "prioridade": "Alta",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG02"
+      ],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT20",
+      "funcionalidade": "Quantidade",
+      "titulo": "Quantidade inválida (0, -1, 1.5, texto, ausente)",
+      "regra": "CA10",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT21",
+      "funcionalidade": "Contrato da API",
+      "titulo": "Listar produtos",
+      "regra": "—",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT22",
+      "funcionalidade": "Contrato da API",
+      "titulo": "Consultar um produto (200 / 404)",
+      "regra": "—",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT23",
+      "funcionalidade": "Contrato da API",
+      "titulo": "Validação da lista de itens",
+      "regra": "—",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT24",
+      "funcionalidade": "Contrato da API",
+      "titulo": "Erros gerais (400 / 404 / 405)",
+      "regra": "—",
+      "prioridade": "Baixa",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT25",
+      "funcionalidade": "Pedido",
+      "titulo": "Pedido com cupom confirmado com os valores do carrinho",
+      "regra": "CA01, CA06",
+      "prioridade": "Alta",
+      "camadas": "UI + API",
+      "automacao": "Playwright + Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT25_pedido_confirmado.png",
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT26",
+      "funcionalidade": "Pedido",
+      "titulo": "Dados do cliente inválidos bloqueiam o pedido na tela",
+      "regra": "RE01, RE02, RE03",
+      "prioridade": "Média",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT26_validacao_cliente.png"
+      ]
+    },
+    {
+      "id": "CT27",
+      "funcionalidade": "Pedido",
+      "titulo": "Dados do cliente inválidos na API",
+      "regra": "RE01, RE02, RE03",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT28",
+      "funcionalidade": "Pedido",
+      "titulo": "CEP com ou sem hífen é aceito",
+      "regra": "RE03",
+      "prioridade": "Média",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    },
+    {
+      "id": "CT29",
+      "funcionalidade": "Frete grátis",
+      "titulo": "Valores da tela iguais aos da API",
+      "regra": "CA01, CA06",
+      "prioridade": "Alta",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT29_tela_igual_api.png"
+      ]
+    },
+    {
+      "id": "CT30",
+      "funcionalidade": "Cupom",
+      "titulo": "Comunicação da promoção na home segue a regra",
+      "regra": "CA01",
+      "prioridade": "Média",
+      "camadas": "UI",
+      "automacao": "Manual",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG03"
+      ],
+      "evidencias": [
+        "docs/evidencias/ui/BUG03_banner_primeira_compra.png"
+      ]
+    },
+    {
+      "id": "CT31",
+      "funcionalidade": "Cupom",
+      "titulo": "Cupom é removido quando o carrinho fica vazio",
+      "regra": "CA05",
+      "prioridade": "Baixa",
+      "camadas": "UI",
+      "automacao": "Manual",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG06"
+      ],
+      "evidencias": [
+        "docs/evidencias/ui/BUG06_1_carrinho_vazio.png",
+        "docs/evidencias/ui/BUG06_2_cupom_continua_aplicado.png",
+        "docs/evidencias/ui/BUG06_3_esvaziar_remove_cupom.png"
+      ]
+    },
+    {
+      "id": "CT32",
+      "funcionalidade": "Pedido",
+      "titulo": "Casos de borda de nome e e-mail",
+      "regra": "RE01, RE02",
+      "prioridade": "Baixa",
+      "camadas": "API",
+      "automacao": "Postman",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG04",
+        "BUG05"
+      ],
+      "evidencias": [
+        "docs/evidencias/api/relatorio-newman.html"
+      ]
+    }
+  ],
+  "bugs": [
+    {
+      "id": "BUG01",
+      "titulo": "Frete de R$ 19,90 é cobrado quando o subtotal é exatamente R$ 200,00",
+      "severidade": "Alta",
+      "prioridade": "P1",
+      "cenario": "CT12",
+      "regra": "CA06",
+      "onde": "API, carrinho, checkout e pedido",
+      "status": "Aberto"
+    },
+    {
+      "id": "BUG02",
+      "titulo": "API aceita mais de 5 unidades do mesmo produto",
+      "severidade": "Alta",
+      "prioridade": "P1",
+      "cenario": "CT19",
+      "regra": "CA10",
+      "onde": "API (/carrinho/calcular e /pedidos)",
+      "status": "Aberto"
+    },
+    {
+      "id": "BUG03",
+      "titulo": "Home anuncia BEMVINDO10 só \"na primeira compra\", regra que não existe na entrega",
+      "severidade": "Média",
+      "prioridade": "P2",
+      "cenario": "CT30",
+      "regra": "CA01",
+      "onde": "Interface (home)",
+      "status": "Aberto"
+    },
+    {
+      "id": "BUG04",
+      "titulo": "Nome formado só por números é aceito como nome e sobrenome",
+      "severidade": "Baixa",
+      "prioridade": "P3",
+      "cenario": "CT32",
+      "regra": "RE01",
+      "onde": "API e interface (checkout)",
+      "status": "Aberto"
+    },
+    {
+      "id": "BUG05",
+      "titulo": "E-mail com pontos seguidos no domínio é aceito",
+      "severidade": "Baixa",
+      "prioridade": "P3",
+      "cenario": "CT32",
+      "regra": "RE02",
+      "onde": "API e interface (checkout)",
+      "status": "Aberto"
+    },
+    {
+      "id": "BUG06",
+      "titulo": "Cupom continua aplicado depois de remover todos os itens um a um",
+      "severidade": "Baixa",
+      "prioridade": "P3",
+      "cenario": "CT31",
+      "regra": "CA05",
+      "onde": "Interface (carrinho)",
+      "status": "Aberto"
+    }
+  ],
+  "observacoes": [
+    {
+      "id": "OBS01",
+      "descricao": "Mensagem \"Faltam R$ X\" logo abaixo do total com frete confunde (ex.: total R$ 199,60 e \"Faltam R$ 20,30\"). A regra está correta; sugestão: deixar claro que o valor se refere aos produtos."
+    },
+    {
+      "id": "OBS02",
+      "descricao": "GET /api devolve a página HTML da loja (200) em vez de um JSON 404 ROTA_NAO_ENCONTRADA. As demais rotas inexistentes em /api/* respondem certo."
+    },
+    {
+      "id": "OBS03",
+      "descricao": "A API aceita cupom que não é texto (lista ou número) e converte para texto (\"BEMVINDO10,VERAO2026\") em vez de recusar o tipo."
+    },
+    {
+      "id": "OBS04",
+      "descricao": "Na API, cupom vazio vira cupom null, mas cupom só com espaços volta como \"Cupom inválido.\" com código vazio. Comportamentos diferentes para casos equivalentes."
+    },
+    {
+      "id": "OBS05",
+      "descricao": "CEP enviado como número (1310100) retorna \"Informe o CEP.\", como se estivesse vazio; a mensagem esperada seria sobre o formato."
+    },
+    {
+      "id": "OBS06",
+      "descricao": "A API aceita requisições sem o cabeçalho Content-Type: application/json, que a documentação pede."
+    },
+    {
+      "id": "OBS07",
+      "descricao": "\"Maria S\" é recusado como nome sem sobrenome. A regra não diz se sobrenome de uma letra vale; fica como pergunta."
+    }
+  ]
+}

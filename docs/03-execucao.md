@@ -1,35 +1,97 @@
 # 3. Execução dos testes
 
-**Ambiente:** https://verzel-store.qa-test-verzel-store.workers.dev/
-**Navegador / SO:** <ex.: Chrome 1xx · Windows 11>
-**Período:** <dd/mm/aaaa a dd/mm/aaaa>
+| | |
+|---|---|
+| **Ambiente** | https://verzel-store.qa-test-verzel-store.workers.dev |
+| **Entrega** | VZS-142 · versão 2.3.0 |
+| **Navegador** | Chromium 141 (Playwright 1.63) · resolução 1280 × 720 e 1280 × 900 |
+| **API** | Postman (collection em `postman/`) executada com Newman 6.2 |
+| **Data** | 08/10/2026 |
+| **Executado por** | Haian Vilas Boas |
 
-Legenda: ✅ Passou · ❌ Falhou · ⛔ Bloqueado · ⏭️ Não executado
+Legenda: ✅ Passou · ❌ Falhou · ⛔ Bloqueado
 
-## 3.1 Cenários planejados
+## 3.1 Resumo
 
-| ID | Cenário | Prioridade | Tipo | Resultado | Bug | Evidência |
-|---|---|---|---|---|---|---|
-| CT01 | | Alta | Manual / Automatizado | | | [CT01](evidencias/CT01.png) |
-| CT02 | | | | | | |
+| Cenários | ✅ Passou | ❌ Falhou | ⛔ Bloqueado | Bugs | Observações |
+|---|---|---|---|---|---|
+| 32 | 27 | 5 | 0 | 6 (alta 2 · média 1 · baixa 3) | 7 |
 
-## 3.2 Testes exploratórios
+**Automação**
+- **Playwright (interface):** 17 testes. 16 passam e 1 é falha esperada (`test.fail`) que documenta o BUG01. Quando o bug for corrigido, esse teste passa a acusar e a marcação deve ser retirada.
+- **Postman/Newman (API):** 46 requisições e 272 asserções. 39 requisições passam; as 7 que falham são exatamente as marcadas com `[BUG01]`, `[BUG02]`, `[BUG04]` e `[BUG05]`. Relatório: [evidencias/api/relatorio-newman.html](evidencias/api/relatorio-newman.html) (baixe e abra no navegador).
 
-Sessões curtas com um objetivo (charter). Registre o que testou, o que achou e o que ficou de dúvida.
+Os dados estruturados desta execução estão em [resultados.json](resultados.json).
 
-### Sessão 1 · <objetivo, ex.: "explorar combinações de cupom e frete grátis ao alterar o carrinho">
-- **Duração:** 30 min
-- **O que fiz:**
-  - …
-- **O que encontrei:** BUG0x, BUG0y
-- **Dúvidas / ideias para novos testes:**
-  - …
+## 3.2 Cenários executados
 
-### Sessão 2 · <objetivo>
-- …
+| ID | Cenário | Regra | Prioridade | Camada | Execução | Resultado | Bug | Evidência |
+|---|---|---|---|---|---|---|---|---|
+| CT01 | Cupom válido aplica 10% sobre o subtotal | CA01 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT01_cupom_valido.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT02 | Código não diferencia maiúsculas de minúsculas | CA02 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT02_cupom_normalizado.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT03 | Espaços no início e no fim são ignorados | CA02 | Média | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT03_cupom_normalizado.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT04 | Espaço no meio do código torna o cupom inválido | CA02 | Baixa | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT05 | Cupom inexistente mostra "Cupom inválido." | CA03 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT05_cupom_xpto.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT06 | Cupom expirado mostra "Cupom expirado." | CA04 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT06_cupom_verao2026.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT07 | Campo vazio pede para informar um cupom | CA03 | Baixa | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT07_cupom_vazio.png) |
+| CT08 | Apenas um cupom por vez | CA05 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT08_um_cupom_por_vez.png) |
+| CT09 | Remover o cupom e aplicar outro | CA05 | Média | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT09_trocar_cupom.png) |
+| CT10 | Carrinho sem cupom não tem desconto | CA01 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT11 | Pedido com cupom inválido ou expirado é recusado (422) | CA03, CA04 | Alta | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT12 | Valor-limite do frete grátis (R$ 199,80 / 200,00 / 219,80) | CA06 | Alta | UI + API | Playwright + Postman | ❌ Falhou | [BUG01](04-bugs.md#bug01) | [1](evidencias/ui/CT12_BUG01_frete_200.png) · [2](evidencias/ui/BUG01_200_com_cupom.png) · [3](evidencias/api/relatorio-newman.html) |
+| CT13 | Abaixo de R$ 200,00 informa quanto falta | CA07 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT13_faltante_frete.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT14 | Frete grátis usa o subtotal antes do desconto | CA08 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT14_frete_antes_do_desconto.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT15 | Desconto não incide sobre o frete | CA09 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT16 | Fórmula do total em 40 carrinhos aleatórios | CA01, CA06, CA09 | Alta | API | Script | ✅ Passou | — | Saída do script na seção 3.4 |
+| CT17 | Arredondamento em 2 casas decimais | CA11 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT18 | Interface limita 5 unidades por produto | CA10 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT18_limite_vitrine.png) · [2](evidencias/ui/CT18_limite_carrinho.png) |
+| CT19 | API recusa mais de 5 unidades | CA10 | Alta | API | Postman | ❌ Falhou | [BUG02](04-bugs.md#bug02) | [1](evidencias/api/relatorio-newman.html) |
+| CT20 | Quantidade inválida (0, -1, 1.5, texto, ausente) | CA10 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT21 | Listar produtos | — | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT22 | Consultar um produto (200 / 404) | — | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT23 | Validação da lista de itens | — | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT24 | Erros gerais (400 / 404 / 405) | — | Baixa | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT25 | Pedido com cupom confirmado com os valores do carrinho | CA01, CA06 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT25_pedido_confirmado.png) · [2](evidencias/api/relatorio-newman.html) |
+| CT26 | Dados do cliente inválidos bloqueiam o pedido na tela | RE01, RE02, RE03 | Média | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT26_validacao_cliente.png) |
+| CT27 | Dados do cliente inválidos na API | RE01, RE02, RE03 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT28 | CEP com ou sem hífen é aceito | RE03 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
+| CT29 | Valores da tela iguais aos da API | CA01, CA06 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT29_tela_igual_api.png) |
+| CT30 | Comunicação da promoção na home segue a regra | CA01 | Média | UI | Manual | ❌ Falhou | [BUG03](04-bugs.md#bug03) | [1](evidencias/ui/BUG03_banner_primeira_compra.png) |
+| CT31 | Cupom é removido quando o carrinho fica vazio | CA05 | Baixa | UI | Manual | ❌ Falhou | [BUG06](04-bugs.md#bug06) | [1](evidencias/ui/BUG06_1_carrinho_vazio.png) · [2](evidencias/ui/BUG06_2_cupom_continua_aplicado.png) · [3](evidencias/ui/BUG06_3_esvaziar_remove_cupom.png) |
+| CT32 | Casos de borda de nome e e-mail | RE01, RE02 | Baixa | API | Postman | ❌ Falhou | [BUG04](04-bugs.md#bug04), [BUG05](04-bugs.md#bug05) | [1](evidencias/api/relatorio-newman.html) |
 
-## 3.3 Consistência tela × API
+## 3.3 Testes exploratórios
 
-| Situação | Valor na tela | Valor na API | Igual? |
+Sessões curtas com um objetivo (charter). Cada uma gerou cenários novos ou bugs.
+
+### Sessão 1 · Limite do frete grátis na interface e na API (30 min)
+- **O que fiz:** montei carrinhos com subtotal logo abaixo, exatamente em e acima de R$ 200,00, com e sem cupom. Repeti a mesma combinação na API.
+- **O que encontrei:** **BUG01**. Com R$ 200,00 o frete é cobrado e a mensagem diz "Faltam R$ 0,00 para o frete grátis". A API devolve `freteGratis: false` e `valorFaltanteFreteGratis: 0` ao mesmo tempo, então o erro está no backend e chega até o pedido.
+- **Dúvidas e ideias:** a mensagem "Faltam R$ 20,30" logo abaixo de um total de R$ 199,60 confunde (OBS01).
+
+### Sessão 2 · Limite de 5 unidades por camada (20 min)
+- **O que fiz:** tentei passar de 5 unidades pela vitrine, pelo botão "+" do carrinho e direto na API, em `/carrinho/calcular` e `/pedidos`.
+- **O que encontrei:** a interface bloqueia nos dois pontos. A API aceita 6 e até 1.000 unidades, e o pedido é confirmado (**BUG02**).
+- **Dúvidas e ideias:** com dois erros no mesmo item (produto duplicado e quantidade 6), a API responde `ITEM_DUPLICADO`. Não é bug, mas a ordem de validação não está documentada (AMB10).
+
+### Sessão 3 · Ciclo de vida do cupom no carrinho (25 min)
+- **O que fiz:** apliquei, removi e troquei o cupom; recarreguei a página; alterei quantidades com o cupom aplicado; esvaziei o carrinho pelo link e removendo item a item.
+- **O que encontrei:** o cupom sobrevive ao recarregar a página, o que é coerente com o carrinho guardado na aba. Ao remover os itens um a um, o cupom continua aplicado quando um produto novo é adicionado; pelo "Esvaziar carrinho" ele sai (**BUG06**).
+- **Dúvidas e ideias:** a home anuncia o cupom "na primeira compra" (**BUG03**).
+
+### Sessão 4 · Formatos de cupom e de dados na API (30 min)
+- **O que fiz:** enviei cupom com tab e quebra de linha, vazio, só espaços, `null`, lista e número; nomes, e-mails e CEPs no limite da regra; corpo sem `Content-Type`.
+- **O que encontrei:** **BUG04** (nome "123 456" aceito) e **BUG05** (e-mail `maria@exemplo..com` aceito), além das observações OBS02 a OBS07.
+
+## 3.4 Consistência tela × API
+
+| Situação | Tela | API (`/carrinho/calcular`) | Igual? |
 |---|---|---|---|
-| | | | |
+| P002 + P004 × 2 + BEMVINDO10 | 239,70 · −23,97 · Grátis · **215,73** | 239.7 · 23.97 · 0 · **215.73** | ✅ (CT29, automatizado) |
+| P001 × 3 | 179,70 · 0,00 · 19,90 · **199,60** · faltam 20,30 | 179.7 · 0 · 19.9 · **199.6** · 20.3 | ✅ |
+| P005 × 2 | 200,00 · 0,00 · **19,90** · 219,90 · faltam 0,00 | 200 · 0 · **19.9** · 219.9 · 0 | ✅ iguais, mas os dois errados (BUG01) |
+| P007 + BEMVINDO10 | 229,90 · −22,99 · Grátis · **206,91** | 229.9 · 22.99 · 0 · **206.91** | ✅ |
+| Checkout → confirmação (CT25) | 215,73 | `/pedidos` 201 · 215.73 | ✅ |
+
+**CT16 · 40 carrinhos aleatórios:** gerei 40 carrinhos (1 a 4 produtos, 1 a 5 unidades, com e sem cupom) e comparei subtotal, desconto, frete, faltante e total da API com um cálculo independente em decimal (arredondamento meio para cima). Resultado: **0 diferenças**. Nenhum carrinho caiu exatamente em R$ 200,00, por isso o CT12 cobre esse ponto separadamente.
+

@@ -1,4 +1,4 @@
-name: Playwright
+name: Testes
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  ui:
+    name: Interface (Playwright)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -18,10 +19,32 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+      - run: npx playwright test --project=ui
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 14
+
+  api:
+    name: API (Postman/Newman)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # As requisições marcadas com [BUGxx] falham enquanto os bugs estiverem abertos (ver docs/04-bugs.md).
+      # Por isso o passo não interrompe o pipeline; o relatório mostra o resultado de cada asserção.
+      - run: npm run test:api
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: newman-report
+          path: reports/
           retention-days: 14
