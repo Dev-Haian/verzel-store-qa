@@ -1,5 +1,7 @@
 # 3. Execução dos testes
 
+> 📊 **Visualização interativa desta execução:** [verzel-store-qa-painel.lovable.app](https://verzel-store-qa-painel.lovable.app). O painel traz todos os cenários, bugs, observações e evidências desta página, com filtros e gráficos.
+
 | | |
 |---|---|
 | **Ambiente** | https://verzel-store.qa-test-verzel-store.workers.dev |

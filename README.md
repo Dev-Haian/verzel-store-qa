@@ -7,7 +7,24 @@ Validação da entrega **VZS-142 · cupom de desconto + frete grátis** da Verze
 | **Loja** | https://verzel-store.qa-test-verzel-store.workers.dev/ |
 | **Documentação da entrega** | https://verzel-store.qa-test-verzel-store.workers.dev/documentacao |
 | **API** | https://verzel-store.qa-test-verzel-store.workers.dev/api |
+| **Painel de resultados** | **https://verzel-store-qa-painel.lovable.app** |
 | **Autor** | Haian Vilas Boas · [LinkedIn](https://www.linkedin.com/in/haian-vilas-boas-806647221) · [GitHub](https://github.com/Dev-Haian) |
+
+## 📊 Painel de resultados: comece por aqui
+
+### 👉 **[verzel-store-qa-painel.lovable.app](https://verzel-store-qa-painel.lovable.app)**
+
+**Todas as informações deste teste estão no painel**, em uma só tela e sem precisar abrir arquivo por arquivo:
+
+- **Visão geral:** números da execução, taxa de aprovação, recomendação de liberação e gráficos por resultado, severidade e funcionalidade.
+- **Cenários:** os 32 cenários com resultado, regra coberta, camada (UI/API), tipo de execução, filtros e as evidências de cada um.
+- **Bugs:** os 6 bugs por severidade, com a regra violada, os prints e o link para o report completo.
+- **Observações:** os 7 pontos que não são bugs, mas merecem conversa com o time.
+- **Automação:** resultados do Playwright (interface) e do Postman/Newman (API).
+
+[![Painel de resultados dos testes](docs/painel.png)](https://verzel-store-qa-painel.lovable.app)
+
+O painel lê os dados direto deste repositório ([docs/resultados.json](docs/resultados.json)) e os prints de [docs/evidencias/](docs/evidencias/). Qualquer atualização feita aqui aparece lá automaticamente. Os documentos abaixo trazem o mesmo conteúdo com o detalhamento completo.
 
 ## Resumo da execução
 
@@ -26,6 +43,7 @@ O restante do cupom e do frete está correto nas duas camadas: desconto sobre o 
 
 | Entrega pedida | Arquivo |
 |---|---|
+| **Painel com todos os resultados** | **https://verzel-store-qa-painel.lovable.app** |
 | Análise da documentação, premissas e ambiguidades | [docs/01-analise-da-documentacao.md](docs/01-analise-da-documentacao.md) |
 | Cenários de teste (Gherkin) | [docs/02-cenarios.feature](docs/02-cenarios.feature) |
 | Execução dos testes manuais e exploratórios, com resultados | [docs/03-execucao.md](docs/03-execucao.md) |

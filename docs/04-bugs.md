@@ -1,5 +1,7 @@
 # 4. Bugs encontrados
 
+> 📊 Os bugs também estão no [painel de resultados](https://verzel-store-qa-painel.lovable.app), aba **Bugs**, com as evidências de cada um.
+
 **Severidade** (impacto no negócio): Crítica · Alta · Média · Baixa
 **Prioridade** (urgência sugerida de correção): P1 · P2 · P3
 
