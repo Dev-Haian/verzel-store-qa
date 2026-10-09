@@ -17,9 +17,11 @@ Validação da entrega **VZS-142 · cupom de desconto + frete grátis** da Verze
 **Todas as informações deste teste estão no painel**, em uma só tela e sem precisar abrir arquivo por arquivo:
 
 - **Visão geral:** números da execução, taxa de aprovação, recomendação de liberação e gráficos por resultado, severidade e funcionalidade.
-- **Cenários:** os 32 cenários com resultado, regra coberta, camada (UI/API), tipo de execução, filtros e as evidências de cada um.
-- **Bugs:** os 6 bugs por severidade, com a regra violada, os prints e o link para o report completo.
-- **Observações:** os 7 pontos que não são bugs, mas merecem conversa com o time.
+- **Cenários:** os 32 cenários em abas por funcionalidade, com o Gherkin de cada um, resultado, regra coberta, camada (UI/API), tipo de execução e evidências.
+- **Bugs:** os 6 bugs por severidade, com a regra violada, os prints e o link para o report completo, além das 7 observações.
+- **Evidências:** galeria com as 21 telas da loja capturadas durante os testes.
+- **Execução, Análise e Uso de IA:** sessões exploratórias, tela × API, regras, ambiguidades e onde a IA foi usada.
+- **Documentos:** todos os documentos do repositório, renderizados dentro do painel.
 - **Automação:** resultados do Playwright (interface) e do Postman/Newman (API).
 
 [![Painel de resultados dos testes](docs/painel.png)](https://verzel-store-qa-painel.lovable.app)
