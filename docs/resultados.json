@@ -48,6 +48,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT01_cupom_valido.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Cupom válido aplica 10% sobre o subtotal dos produtos\n  Quando aplico o cupom \"BEMVINDO10\"\n  Então vejo a mensagem \"Cupom BEMVINDO10 aplicado.\"\n  E o desconto é de R$ 10,00\n  E o frete continua R$ 19,90\n  E o total é R$ 109,90",
+      "tags": [
+        "@CT01",
+        "@CA01",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -63,6 +73,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT02_cupom_normalizado.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Código do cupom não diferencia maiúsculas de minúsculas\n  Quando aplico o cupom \"bemvindo10\"\n  Então o cupom \"BEMVINDO10\" é aplicado com desconto de R$ 10,00",
+      "tags": [
+        "@CT02",
+        "@CA02",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -78,6 +98,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT03_cupom_normalizado.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Espaços no início e no fim do código são ignorados\n  Quando aplico o cupom \"  BemVindo10  \"\n  Então o cupom \"BEMVINDO10\" é aplicado com desconto de R$ 10,00",
+      "tags": [
+        "@CT03",
+        "@CA02",
+        "@media",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -92,6 +122,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Espaço no meio do código torna o cupom inválido\n  # Interpretação AMB02\n  Quando aplico o cupom \"BEM VINDO10\"\n  Então vejo a mensagem \"Cupom inválido.\"\n  E nenhum desconto é aplicado",
+      "tags": [
+        "@CT04",
+        "@CA02",
+        "@baixa",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -107,6 +145,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT05_cupom_xpto.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Cupom inexistente\n  Quando aplico o cupom \"XPTO\"\n  Então vejo a mensagem \"Cupom inválido.\"\n  E o desconto é de R$ 0,00\n  E o total é R$ 119,90",
+      "tags": [
+        "@CT05",
+        "@CA03",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -122,6 +170,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT06_cupom_verao2026.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Cupom fora da validade\n  Quando aplico o cupom \"VERAO2026\"\n  Então vejo a mensagem \"Cupom expirado.\"\n  E o desconto é de R$ 0,00\n  E o total é R$ 119,90",
+      "tags": [
+        "@CT06",
+        "@CA04",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -136,6 +194,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/ui/CT07_cupom_vazio.png"
+      ],
+      "gherkin": "Cenário: Aplicar o cupom com o campo vazio ou só com espaços\n  # Interpretação AMB03\n  Quando aplico o cupom \"   \"\n  Então vejo a mensagem \"Informe um cupom.\"\n  E nenhum desconto é aplicado",
+      "tags": [
+        "@CT07",
+        "@CA03",
+        "@baixa",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -150,6 +216,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/ui/CT08_um_cupom_por_vez.png"
+      ],
+      "gherkin": "Cenário: Apenas um cupom pode ser aplicado por vez\n  Dado que apliquei o cupom \"BEMVINDO10\"\n  Então o campo de cupom não fica mais disponível\n  E vejo a opção \"Remover cupom\"",
+      "tags": [
+        "@CT08",
+        "@CA05",
+        "@alta",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -164,6 +238,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/ui/CT09_trocar_cupom.png"
+      ],
+      "gherkin": "Cenário: Remover o cupom atual e aplicar outro\n  Dado que apliquei o cupom \"BEMVINDO10\"\n  Quando removo o cupom\n  Então o desconto volta a R$ 0,00 e o total a R$ 119,90\n  E consigo aplicar o cupom \"VERAO2026\", que mostra \"Cupom expirado.\"",
+      "tags": [
+        "@CT09",
+        "@CA05",
+        "@media",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -178,6 +260,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Carrinho sem cupom não tem desconto\n  Quando calculo o carrinho sem informar cupom\n  Então o desconto é 0\n  E o campo \"cupom\" da resposta é null",
+      "tags": [
+        "@CT10",
+        "@CA01",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -192,6 +282,15 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Pedido com cupom inválido ou expirado é recusado\n  # No cálculo do carrinho, o mesmo cupom não é erro (responde 200). No pedido, é 422.\n  Quando envio um pedido com o cupom \"<cupom>\"\n  Então a API responde 422 com o código \"<codigo>\" no campo \"cupom\"\n\n  Exemplos:\n    | cupom     | codigo         |\n    | XPTO      | CUPOM_INVALIDO |\n    | VERAO2026 | CUPOM_EXPIRADO |",
+      "tags": [
+        "@CT11",
+        "@CA03",
+        "@CA04",
+        "@alta",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -210,6 +309,17 @@
         "docs/evidencias/ui/CT12_BUG01_frete_200.png",
         "docs/evidencias/ui/BUG01_200_com_cupom.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Valor-limite do frete grátis\n  Dado que o carrinho tem \"<itens>\" com subtotal de R$ <subtotal>\n  E o cupom aplicado é \"<cupom>\"\n  Quando calculo o carrinho\n  Então o frete é R$ <frete>\n  E o total é R$ <total>\n\n  Exemplos:\n    | itens         | subtotal | cupom      | frete | total  | resultado |\n    | P001 + P002   | 199,80   |            | 19,90 | 219,70 | passou    |\n    | P005 × 2      | 200,00   |            | 0,00  | 200,00 | falhou    |\n    | P008 × 4      | 200,00   |            | 0,00  | 200,00 | falhou    |\n    | P005 × 2      | 200,00   | BEMVINDO10 | 0,00  | 180,00 | falhou    |\n    | P003 + P006   | 219,80   |            | 0,00  | 219,80 | passou    |",
+      "tags": [
+        "@CT12",
+        "@CA06",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman",
+        "@BUG01"
       ]
     },
     {
@@ -225,6 +335,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT13_faltante_frete.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Abaixo de R$ 200,00 o carrinho informa quanto falta\n  Dado que o carrinho tem 3 \"Camiseta Essencial\" (subtotal R$ 179,70)\n  Então o frete é R$ 19,90\n  E o total é R$ 199,60\n  E vejo \"Faltam R$ 20,30 para o frete grátis.\"",
+      "tags": [
+        "@CT13",
+        "@CA07",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -240,6 +360,16 @@
       "evidencias": [
         "docs/evidencias/ui/CT14_frete_antes_do_desconto.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Frete grátis considera o subtotal antes do desconto\n  Dado que o carrinho tem 1 \"Jaqueta Corta-Vento\" (subtotal R$ 229,90)\n  Quando aplico o cupom \"BEMVINDO10\"\n  Então o desconto é R$ 22,99\n  E o frete continua grátis, mesmo com os produtos custando R$ 206,91 depois do desconto\n  E o total é R$ 206,91",
+      "tags": [
+        "@CT14",
+        "@CA08",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -254,6 +384,16 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Desconto não incide sobre o frete\n  Dado que o carrinho tem 1 \"Mochila Urbana 20L\" (subtotal R$ 100,00)\n  Quando aplico o cupom \"BEMVINDO10\"\n  Então o desconto é R$ 10,00 e não R$ 11,99\n  E o total é R$ 109,90",
+      "tags": [
+        "@CT15",
+        "@CA09",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -266,7 +406,16 @@
       "automacao": "Script",
       "resultado": "passou",
       "bugs": [],
-      "evidencias": []
+      "evidencias": [],
+      "gherkin": "Cenário: Fórmula do total em carrinhos variados\n  Dado 40 carrinhos aleatórios, de 1 a 4 produtos, de 1 a 5 unidades, com e sem cupom\n  Quando calculo cada carrinho na API\n  Então subtotal, desconto, frete, faltante e total batem com um cálculo independente\n  # Nenhum dos 40 caiu exatamente em R$ 200,00; esse caso é coberto pelo CT12.",
+      "tags": [
+        "@CT16",
+        "@CA01",
+        "@CA06",
+        "@CA09",
+        "@alta",
+        "@api"
+      ]
     },
     {
       "id": "CT17",
@@ -280,6 +429,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Valores arredondados para 2 casas decimais\n  Dado que o carrinho tem 3 \"Camiseta Essencial\" (59,90 × 3 = 179,70)\n  Quando aplico o cupom \"BEMVINDO10\"\n  Então nenhum valor da resposta tem mais de 2 casas decimais\n  E o total é R$ 181,63",
+      "tags": [
+        "@CT17",
+        "@CA11",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -295,6 +452,14 @@
       "evidencias": [
         "docs/evidencias/ui/CT18_limite_vitrine.png",
         "docs/evidencias/ui/CT18_limite_carrinho.png"
+      ],
+      "gherkin": "Cenário: A interface não deixa passar de 5 unidades\n  Quando adiciono 5 unidades de \"Camiseta Essencial\" pela vitrine\n  Então o botão \"Adicionar ao carrinho\" fica desabilitado com \"Limite de 5 unidades atingido.\"\n  E no carrinho o botão \"+\" fica desabilitado com \"Limite de 5 unidades por produto.\"",
+      "tags": [
+        "@CT18",
+        "@CA10",
+        "@alta",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -311,6 +476,15 @@
       ],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: A API recusa mais de 5 unidades\n  Quando envio <quantidade> unidades de \"P001\" para \"<endpoint>\"\n  Então a API responde <status>\n\n  Exemplos:\n    | quantidade | endpoint               | status                                | resultado |\n    | 5          | /api/carrinho/calcular | 200                                   | passou    |\n    | 6          | /api/carrinho/calcular | 422 QUANTIDADE_MAXIMA_EXCEDIDA        | falhou    |\n    | 6          | /api/pedidos           | 422 QUANTIDADE_MAXIMA_EXCEDIDA        | falhou    |",
+      "tags": [
+        "@CT19",
+        "@CA10",
+        "@alta",
+        "@api",
+        "@postman",
+        "@BUG02"
       ]
     },
     {
@@ -325,6 +499,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Quantidade que não é inteiro maior ou igual a 1\n  Quando envio a quantidade <quantidade> para o cálculo do carrinho\n  Então a API responde 422 com o código \"QUANTIDADE_INVALIDA\"\n\n  Exemplos:\n    | quantidade  |\n    | 0           |\n    | -1          |\n    | 1.5         |\n    | \"2\" (texto) |\n    | ausente     |",
+      "tags": [
+        "@CT20",
+        "@CA10",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -339,6 +521,13 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Listar produtos\n  Quando consulto GET /api/produtos\n  Então recebo 200 com os 8 produtos e os preços da documentação",
+      "tags": [
+        "@CT21",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -353,6 +542,13 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Consultar um produto\n  Quando consulto GET /api/produtos/<id>\n  Então recebo <status>\n\n  Exemplos:\n    | id   | status                         |\n    | P003 | 200 com o Tênis Casual Urbano  |\n    | P999 | 404 PRODUTO_NAO_ENCONTRADO     |",
+      "tags": [
+        "@CT22",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -367,6 +563,13 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Validação da lista de itens\n  Quando envio para o cálculo do carrinho <itens>\n  Então a API responde 422 com o código \"<codigo>\"\n\n  Exemplos:\n    | itens                       | codigo                 |\n    | uma lista vazia             | ITENS_OBRIGATORIOS     |\n    | um corpo sem \"itens\"        | ITENS_OBRIGATORIOS     |\n    | um item que não é objeto    | ITEM_INVALIDO          |\n    | o produto P999              | PRODUTO_NAO_ENCONTRADO |\n    | o produto P001 duas vezes   | ITEM_DUPLICADO         |",
+      "tags": [
+        "@CT23",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -381,6 +584,13 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Erros gerais da API\n  Quando envio <requisicao>\n  Então a API responde <status> com o código \"<codigo>\"\n\n  Exemplos:\n    | requisicao                          | status | codigo               |\n    | um corpo que não é JSON válido      | 400    | JSON_INVALIDO        |\n    | GET para /api/nao-existe            | 404    | ROTA_NAO_ENCONTRADA  |\n    | GET para /api/carrinho/calcular     | 405    | METODO_NAO_PERMITIDO |",
+      "tags": [
+        "@CT24",
+        "@baixa",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -396,6 +606,17 @@
       "evidencias": [
         "docs/evidencias/ui/CT25_pedido_confirmado.png",
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: Pedido com cupom confirmado com os mesmos valores do carrinho\n  Dado que o carrinho tem 1 \"Calça Jeans Slim\", 2 \"Boné Aba Curva\" e o cupom \"BEMVINDO10\"\n  Quando informo \"Maria Silva\", \"maria@exemplo.com\", \"01310-100\" e confirmo o pedido\n  Então a API responde 201 com um número no formato \"VZ-000000\"\n  E vejo \"Pedido confirmado\" com subtotal R$ 239,70, desconto R$ 23,97, frete grátis e total R$ 215,73",
+      "tags": [
+        "@CT25",
+        "@CA01",
+        "@CA06",
+        "@alta",
+        "@ui",
+        "@api",
+        "@playwright",
+        "@postman"
       ]
     },
     {
@@ -410,6 +631,16 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/ui/CT26_validacao_cliente.png"
+      ],
+      "gherkin": "Cenário: Dados do cliente inválidos bloqueiam o pedido na tela\n  Quando confirmo o pedido com os campos vazios\n  Então vejo \"Informe o nome completo.\", \"Informe o e-mail.\" e \"Informe o CEP.\"\n  Quando informo \"Maria\", \"maria@\" e \"0131010\"\n  Então vejo \"Informe nome e sobrenome.\", \"Informe um e-mail válido.\" e \"Informe um CEP com 8 dígitos.\"\n  E nenhum pedido é enviado para a API",
+      "tags": [
+        "@CT26",
+        "@RE01",
+        "@RE02",
+        "@RE03",
+        "@media",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -424,6 +655,16 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Dados do cliente inválidos na API\n  Quando envio um pedido com <dado>\n  Então a API responde 422 \"DADOS_INVALIDOS\" com \"<mensagem>\" para o campo \"<campo>\"\n\n  Exemplos:\n    | dado                     | campo         | mensagem                      |\n    | nome \"Maria\"             | cliente.nome  | Informe nome e sobrenome.     |\n    | e-mail \"maria@\"          | cliente.email | Informe um e-mail válido.     |\n    | CEP \"0131010\"            | cliente.cep   | Informe um CEP com 8 dígitos. |\n    | CEP \"013101-00\"          | cliente.cep   | Informe um CEP com 8 dígitos. |",
+      "tags": [
+        "@CT27",
+        "@RE01",
+        "@RE02",
+        "@RE03",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -438,6 +679,14 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Cenário: CEP com ou sem hífen é aceito\n  Quando envio um pedido com o CEP \"01310100\"\n  Então a API responde 201\n  E o CEP volta normalizado como \"01310100\"",
+      "tags": [
+        "@CT28",
+        "@RE03",
+        "@media",
+        "@api",
+        "@postman"
       ]
     },
     {
@@ -452,6 +701,15 @@
       "bugs": [],
       "evidencias": [
         "docs/evidencias/ui/CT29_tela_igual_api.png"
+      ],
+      "gherkin": "Cenário: Os valores da tela são os mesmos devolvidos pela API\n  Dado que o carrinho tem 1 \"Calça Jeans Slim\" e 2 \"Boné Aba Curva\"\n  Quando aplico o cupom \"BEMVINDO10\"\n  Então subtotal, desconto, frete e total exibidos são iguais aos da resposta de /api/carrinho/calcular\n  E batem com o exemplo da documentação (239,70 − 23,97 + 0 = 215,73)",
+      "tags": [
+        "@CT29",
+        "@CA01",
+        "@CA06",
+        "@alta",
+        "@ui",
+        "@playwright"
       ]
     },
     {
@@ -468,6 +726,14 @@
       ],
       "evidencias": [
         "docs/evidencias/ui/BUG03_banner_primeira_compra.png"
+      ],
+      "gherkin": "Cenário: A comunicação da promoção na home segue a regra do cupom\n  Quando acesso a página inicial\n  Então o texto do cupom BEMVINDO10 não traz restrições que não existem na regra",
+      "tags": [
+        "@CT30",
+        "@CA01",
+        "@media",
+        "@ui",
+        "@BUG03"
       ]
     },
     {
@@ -486,6 +752,14 @@
         "docs/evidencias/ui/BUG06_1_carrinho_vazio.png",
         "docs/evidencias/ui/BUG06_2_cupom_continua_aplicado.png",
         "docs/evidencias/ui/BUG06_3_esvaziar_remove_cupom.png"
+      ],
+      "gherkin": "Cenário: Cupom é removido quando o carrinho fica vazio\n  # Interpretação AMB13\n  Dado que apliquei o cupom \"BEMVINDO10\"\n  Quando removo todos os itens do carrinho um a um\n  E adiciono outro produto\n  Então o carrinho não tem cupom aplicado",
+      "tags": [
+        "@CT31",
+        "@CA05",
+        "@baixa",
+        "@ui",
+        "@BUG06"
       ]
     },
     {
@@ -503,6 +777,17 @@
       ],
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
+      ],
+      "gherkin": "Esquema do Cenário: Casos de borda de nome e e-mail\n  # Interpretação AMB12. Regras anteriores à entrega.\n  Quando envio um pedido com <dado>\n  Então a API responde 422 \"DADOS_INVALIDOS\" para o campo \"<campo>\"\n\n  Exemplos:\n    | dado                          | campo         | resultado |\n    | nome \"123 456\"                | cliente.nome  | falhou    |\n    | e-mail \"maria@exemplo..com\"   | cliente.email | falhou    |",
+      "tags": [
+        "@CT32",
+        "@RE01",
+        "@RE02",
+        "@baixa",
+        "@api",
+        "@postman",
+        "@BUG04",
+        "@BUG05"
       ]
     }
   ],
@@ -596,6 +881,577 @@
     {
       "id": "OBS07",
       "descricao": "\"Maria S\" é recusado como nome sem sobrenome. A regra não diz se sobrenome de uma letra vale; fica como pergunta."
+    }
+  ],
+  "analise": {
+    "resumo": "Entrega VZS-142: cupom de desconto no carrinho e regra de frete grátis. Os cálculos são feitos pela API e a interface apenas exibe o resultado, por isso a estratégia testa as duas camadas e compara uma com a outra.",
+    "limitacoesDoAmbiente": [
+      "O carrinho fica guardado só na aba do navegador. Outra aba, outro navegador ou janela anônima começam vazios.",
+      "Os pedidos não são armazenados. O número gerado é fictício e não há consulta de pedidos (por isso `GET /api/pedidos` responder 405 é esperado).",
+      "Nenhum e-mail é enviado e nenhuma cobrança é feita.",
+      "Produtos, preços e cupons são fixos e iguais para todos. Não existe controle de estoque.",
+      "A API não guarda nada entre uma chamada e outra.",
+      "Fora do escopo: login, cadastro de clientes, pagamento online e consulta de pedidos.",
+      "Fora do escopo pelas regras do teste: carga, estresse e segurança."
+    ],
+    "regras": [
+      {
+        "ID": "CA01",
+        "Regra": "BEMVINDO10 dá 10% de desconto sobre o **subtotal dos produtos**",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA02",
+        "Regra": "Código não diferencia maiúsculas/minúsculas; espaços no início e no fim são ignorados",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA03",
+        "Regra": "Cupom inexistente → \"Cupom inválido.\" e nenhum desconto",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA04",
+        "Regra": "Cupom fora da validade → \"Cupom expirado.\" e nenhum desconto",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA05",
+        "Regra": "Um cupom por vez; para trocar, remove o atual e aplica outro",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA06",
+        "Regra": "Frete grátis com subtotal **a partir de R$ 200,00, inclusive**",
+        "Fonte": "Critérios de aceite + Regras de cálculo"
+      },
+      {
+        "ID": "CA07",
+        "Regra": "Abaixo de R$ 200,00: frete fixo R$ 19,90 e o carrinho informa quanto falta (`200 − subtotal`, nunca < 0)",
+        "Fonte": "Critérios de aceite + Regras de cálculo"
+      },
+      {
+        "ID": "CA08",
+        "Regra": "Frete grátis considera o subtotal **antes** do desconto",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA09",
+        "Regra": "Desconto não incide sobre o frete",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "CA10",
+        "Regra": "Máximo de 5 unidades por produto, **na interface e na API**",
+        "Fonte": "Critérios de aceite + Códigos de erro (`QUANTIDADE_MAXIMA_EXCEDIDA`)"
+      },
+      {
+        "ID": "CA11",
+        "Regra": "Todos os valores arredondados para 2 casas",
+        "Fonte": "Critérios de aceite"
+      },
+      {
+        "ID": "—",
+        "Regra": "`total = subtotal − desconto + frete`",
+        "Fonte": "Regras de cálculo"
+      },
+      {
+        "ID": "RE01",
+        "Regra": "Nome do cliente com nome e sobrenome",
+        "Fonte": "Outras regras da loja"
+      },
+      {
+        "ID": "RE02",
+        "Regra": "E-mail em formato válido",
+        "Fonte": "Outras regras da loja"
+      },
+      {
+        "ID": "RE03",
+        "Regra": "CEP com 8 dígitos, com ou sem hífen",
+        "Fonte": "Outras regras da loja"
+      },
+      {
+        "ID": "RE04",
+        "Regra": "Pagamento na entrega, sem etapa online",
+        "Fonte": "Outras regras da loja"
+      }
+    ],
+    "limitesDeValor": [
+      {
+        "Subtotal": "R$ 199,40",
+        "Carrinho": "P006 × 5 + P004",
+        "Por quê": "logo abaixo do limite"
+      },
+      {
+        "Subtotal": "R$ 199,80",
+        "Carrinho": "P001 + P002",
+        "Por quê": "o mais perto possível abaixo do limite (faltam R$ 0,20)"
+      },
+      {
+        "Subtotal": "**R$ 200,00**",
+        "Carrinho": "P005 × 2 · P008 × 4 · P005 + P008 × 2",
+        "Por quê": "**exatamente no limite**"
+      },
+      {
+        "Subtotal": "R$ 219,80",
+        "Carrinho": "P003 + P006",
+        "Por quê": "acima do limite"
+      }
+    ],
+    "api": [
+      {
+        "Método": "GET",
+        "Endpoint": "`/api/produtos`",
+        "Para que serve": "Lista os produtos",
+        "Observações": "200"
+      },
+      {
+        "Método": "GET",
+        "Endpoint": "`/api/produtos/{id}`",
+        "Para que serve": "Consulta um produto",
+        "Observações": "200 ou 404 `PRODUTO_NAO_ENCONTRADO`"
+      },
+      {
+        "Método": "POST",
+        "Endpoint": "`/api/carrinho/calcular`",
+        "Para que serve": "Calcula o carrinho sem gravar",
+        "Observações": "Cupom inválido/expirado **não** é erro: 200, sem desconto, motivo em `cupom.mensagem`"
+      },
+      {
+        "Método": "POST",
+        "Endpoint": "`/api/pedidos`",
+        "Para que serve": "Valida e confirma o pedido",
+        "Observações": "201 com número `VZ-000000`; cupom inválido/expirado **é** erro 422"
+      }
+    ],
+    "ambiguidades": [
+      {
+        "ID": "AMB01",
+        "Situação ambígua": "A home diz \"**na primeira compra**, o cupom BEMVINDO10 dá 10%\". O CA01 não restringe à primeira compra, e o ambiente nem guarda pedidos.",
+        "Minha interpretação": "Vale o CA01: o cupom funciona em qualquer compra. O texto da home é uma divergência de comunicação e foi reportado (BUG03).",
+        "Por quê": "A documentação da entrega é a especificação; a regra \"primeira compra\" nem é verificável aqui."
+      },
+      {
+        "ID": "AMB02",
+        "Situação ambígua": "CA02 fala de espaços \"no início e no fim\". E espaço no meio, tab, quebra de linha?",
+        "Minha interpretação": "Espaço no meio = cupom inválido. Tab e quebra de linha nas pontas contam como espaço e são ignorados.",
+        "Por quê": "Leitura literal do CA02. A API se comportou assim."
+      },
+      {
+        "ID": "AMB03",
+        "Situação ambígua": "Cupom vazio ou só com espaços: é \"sem cupom\" ou \"Cupom inválido.\"?",
+        "Minha interpretação": "Na tela, pede \"Informe um cupom.\" sem chamar a API. Na API, é tratado como sem cupom.",
+        "Por quê": "É o comportamento mais amigável e não gera desconto indevido. Registrei a diferença da API (vazio → `cupom: null`; só espaços → \"Cupom inválido.\") como observação."
+      },
+      {
+        "ID": "AMB04",
+        "Situação ambígua": "CA05 não diz **como** a tela impede o segundo cupom.",
+        "Minha interpretação": "Qualquer forma que impeça é válida. A loja esconde o campo e mostra \"Remover cupom\".",
+        "Por quê": "O critério é sobre o resultado, não sobre o componente."
+      },
+      {
+        "ID": "AMB05",
+        "Situação ambígua": "CA07 não define o texto do \"quanto falta\".",
+        "Minha interpretação": "Aceito qualquer texto que mostre o valor certo (`200 − subtotal`). A loja usa \"Faltam R$ X para o frete grátis.\"",
+        "Por quê": "—"
+      },
+      {
+        "ID": "AMB06",
+        "Situação ambígua": "O \"quanto falta\" é calculado sobre o subtotal, mas a tela mostra o total com frete logo acima (ex.: total R$ 199,60 e \"Faltam R$ 20,30\").",
+        "Minha interpretação": "Está correto pela regra. Registrei como sugestão de melhoria de usabilidade, não como bug.",
+        "Por quê": "Cumpre CA07/CA08, mas confunde quem compara com o total."
+      },
+      {
+        "ID": "AMB07",
+        "Situação ambígua": "CA11 não diz o método de arredondamento (meio para cima ou bancário) nem em que etapa arredondar.",
+        "Minha interpretação": "Arredondar cada valor exibido para 2 casas, meio para cima.",
+        "Por quê": "Com os preços atuais, 10% de qualquer subtotal já dá 2 casas exatas, então o risco real é erro de ponto flutuante (ex.: 59,90 × 3). Conferi isso."
+      },
+      {
+        "ID": "AMB08",
+        "Situação ambígua": "Validade do VERAO2026 (\"expirado em 31/03/2026\"): o dia 31 vale? Qual fuso?",
+        "Minha interpretação": "Não testável: os dados são fixos e a data já passou. Fica como pergunta para o time.",
+        "Por quê": "—"
+      },
+      {
+        "ID": "AMB09",
+        "Situação ambígua": "Mensagens do CA03/CA04 valem também para `cupom.mensagem` da API?",
+        "Minha interpretação": "Sim. A API usa exatamente \"Cupom inválido.\" e \"Cupom expirado.\"",
+        "Por quê": "Consistência entre camadas."
+      },
+      {
+        "ID": "AMB10",
+        "Situação ambígua": "Prioridade entre erros quando há vários problemas no mesmo pedido não é definida.",
+        "Minha interpretação": "Qualquer ordem é aceitável, desde que um erro documentado seja retornado. A API valida os dados do cliente primeiro e lista todos os campos inválidos juntos.",
+        "Por quê": "—"
+      },
+      {
+        "ID": "AMB11",
+        "Situação ambígua": "`DADOS_INVALIDOS` diz que os detalhes vêm em `campos`, mas o único exemplo de erro mostra `campo`.",
+        "Minha interpretação": "`campos` é uma lista de `{ campo, mensagem }`. A API seguiu isso.",
+        "Por quê": "—"
+      },
+      {
+        "ID": "AMB12",
+        "Situação ambígua": "O que é \"nome e sobrenome\" e \"e-mail válido\" não está definido.",
+        "Minha interpretação": "Nome: pelo menos duas palavras com letras. E-mail: formato usual `usuario@dominio.tld`.",
+        "Por quê": "Com essa leitura, \"123 456\" e `maria@exemplo..com` deveriam ser recusados (BUG04, BUG05, severidade baixa, regras anteriores à entrega). \"Maria S\" é recusado pela loja e deixei como ponto em aberto."
+      },
+      {
+        "ID": "AMB13",
+        "Situação ambígua": "O que acontece com o cupom quando o carrinho fica vazio?",
+        "Minha interpretação": "O cupom deveria sair junto, como acontece no \"Esvaziar carrinho\".",
+        "Por quê": "Ao remover os itens um a um, o cupom continua aplicado (BUG06)."
+      }
+    ],
+    "estrategia": [
+      "**Prioridade:** regras de cálculo (valor errado = prejuízo ou reclamação) > fluxo de compra > mensagens e usabilidade.",
+      "**Técnicas:** particionamento de equivalência, **análise de valor-limite** nos R$ 200,00 e nas 5 unidades, testes negativos, conferência de 40 carrinhos aleatórios contra um cálculo independente e sessões de teste exploratório.",
+      "**Camadas:** interface (Playwright) e API (Postman/Newman), conferindo se o valor exibido na tela é o mesmo retornado pela API.",
+      "**Fora do escopo:** carga, estresse e segurança (regra do teste). As chamadas foram feitas com intervalo entre elas para não sobrecarregar o ambiente compartilhado."
+    ]
+  },
+  "execucao": {
+    "ambiente": [
+      {
+        "campo": "Ambiente",
+        "valor": "https://verzel-store.qa-test-verzel-store.workers.dev"
+      },
+      {
+        "campo": "Entrega",
+        "valor": "VZS-142 · versão 2.3.0"
+      },
+      {
+        "campo": "Navegador",
+        "valor": "Chromium 141 (Playwright 1.63) · resolução 1280 × 720 e 1280 × 900"
+      },
+      {
+        "campo": "API",
+        "valor": "Postman (collection em `postman/`) executada com Newman 6.2"
+      },
+      {
+        "campo": "Data",
+        "valor": "08/10/2026"
+      },
+      {
+        "campo": "Executado por",
+        "valor": "Haian Vilas Boas"
+      }
+    ],
+    "sessoesExploratorias": [
+      {
+        "titulo": "Sessão 1 · Limite do frete grátis na interface e na API (30 min)",
+        "oQueFiz": "montei carrinhos com subtotal logo abaixo, exatamente em e acima de R$ 200,00, com e sem cupom. Repeti a mesma combinação na API.",
+        "oQueEncontrei": "**BUG01**. Com R$ 200,00 o frete é cobrado e a mensagem diz \"Faltam R$ 0,00 para o frete grátis\". A API devolve `freteGratis: false` e `valorFaltanteFreteGratis: 0` ao mesmo tempo, então o erro está no backend e chega até o pedido.",
+        "duvidas": "a mensagem \"Faltam R$ 20,30\" logo abaixo de um total de R$ 199,60 confunde (OBS01)."
+      },
+      {
+        "titulo": "Sessão 2 · Limite de 5 unidades por camada (20 min)",
+        "oQueFiz": "tentei passar de 5 unidades pela vitrine, pelo botão \"+\" do carrinho e direto na API, em `/carrinho/calcular` e `/pedidos`.",
+        "oQueEncontrei": "a interface bloqueia nos dois pontos. A API aceita 6 e até 1.000 unidades, e o pedido é confirmado (**BUG02**).",
+        "duvidas": "com dois erros no mesmo item (produto duplicado e quantidade 6), a API responde `ITEM_DUPLICADO`. Não é bug, mas a ordem de validação não está documentada (AMB10)."
+      },
+      {
+        "titulo": "Sessão 3 · Ciclo de vida do cupom no carrinho (25 min)",
+        "oQueFiz": "apliquei, removi e troquei o cupom; recarreguei a página; alterei quantidades com o cupom aplicado; esvaziei o carrinho pelo link e removendo item a item.",
+        "oQueEncontrei": "o cupom sobrevive ao recarregar a página, o que é coerente com o carrinho guardado na aba. Ao remover os itens um a um, o cupom continua aplicado quando um produto novo é adicionado; pelo \"Esvaziar carrinho\" ele sai (**BUG06**).",
+        "duvidas": "a home anuncia o cupom \"na primeira compra\" (**BUG03**)."
+      },
+      {
+        "titulo": "Sessão 4 · Formatos de cupom e de dados na API (30 min)",
+        "oQueFiz": "enviei cupom com tab e quebra de linha, vazio, só espaços, `null`, lista e número; nomes, e-mails e CEPs no limite da regra; corpo sem `Content-Type`.",
+        "oQueEncontrei": "**BUG04** (nome \"123 456\" aceito) e **BUG05** (e-mail `maria@exemplo..com` aceito), além das observações OBS02 a OBS07.",
+        "duvidas": ""
+      }
+    ],
+    "telaVsApi": [
+      {
+        "Situação": "P002 + P004 × 2 + BEMVINDO10",
+        "Tela": "239,70 · −23,97 · Grátis · **215,73**",
+        "API (`/carrinho/calcular`)": "239.7 · 23.97 · 0 · **215.73**",
+        "Igual?": "✅ (CT29, automatizado)"
+      },
+      {
+        "Situação": "P001 × 3",
+        "Tela": "179,70 · 0,00 · 19,90 · **199,60** · faltam 20,30",
+        "API (`/carrinho/calcular`)": "179.7 · 0 · 19.9 · **199.6** · 20.3",
+        "Igual?": "✅"
+      },
+      {
+        "Situação": "P005 × 2",
+        "Tela": "200,00 · 0,00 · **19,90** · 219,90 · faltam 0,00",
+        "API (`/carrinho/calcular`)": "200 · 0 · **19.9** · 219.9 · 0",
+        "Igual?": "✅ iguais, mas os dois errados (BUG01)"
+      },
+      {
+        "Situação": "P007 + BEMVINDO10",
+        "Tela": "229,90 · −22,99 · Grátis · **206,91**",
+        "API (`/carrinho/calcular`)": "229.9 · 22.99 · 0 · **206.91**",
+        "Igual?": "✅"
+      },
+      {
+        "Situação": "Checkout → confirmação (CT25)",
+        "Tela": "215,73",
+        "API (`/carrinho/calcular`)": "`/pedidos` 201 · 215.73",
+        "Igual?": "✅"
+      }
+    ],
+    "carrinhosAleatorios": "40 carrinhos aleatórios (1 a 4 produtos, 1 a 5 unidades, com e sem cupom) comparados com um cálculo independente: 0 diferenças."
+  },
+  "usoDeIA": [
+    {
+      "Etapa": "Estrutura do repositório, modelos de documento e configuração do Playwright/CI",
+      "Usei IA?": "Sim",
+      "Como": "Gerou o esqueleto do repositório, os modelos e o `playwright.config.ts`."
+    },
+    {
+      "Etapa": "Leitura da documentação e levantamento das ambiguidades",
+      "Usei IA?": "Sim, em conjunto",
+      "Como": "Li a documentação e levantei pontos. O Claude listou as ambiguidades, e eu revisei e decidi as interpretações."
+    },
+    {
+      "Etapa": "Primeiros testes exploratórios",
+      "Usei IA?": "Não",
+      "Como": "Fiz na loja e encontrei o frete cobrado com R$ 200,00 (BUG01). Com a IA, separei o que era bug do que era regra (o \"Faltam R$ 20,30\" estava correto)."
+    },
+    {
+      "Etapa": "Escrita dos cenários em Gherkin",
+      "Usei IA?": "Sim",
+      "Como": "O Claude escreveu os cenários a partir das regras e da análise. Revisei os nomes, as prioridades e a cobertura."
+    },
+    {
+      "Etapa": "Execução na API",
+      "Usei IA?": "Sim",
+      "Como": "O Claude executou as chamadas na API e montou a collection do Postman, que eu rodo no Postman e pelo Newman."
+    },
+    {
+      "Etapa": "Execução na interface",
+      "Usei IA?": "Sim",
+      "Como": "O Claude automatizou e executou os fluxos com Playwright e capturou as evidências. Conferi os prints e repeti os principais bugs manualmente na loja."
+    },
+    {
+      "Etapa": "Report dos bugs",
+      "Usei IA?": "Sim",
+      "Como": "O Claude redigiu os reports a partir dos resultados. Revisei a severidade, a prioridade e a recomendação final."
+    },
+    {
+      "Etapa": "Automação (Playwright + Postman)",
+      "Usei IA?": "Sim",
+      "Como": "O Claude escreveu os testes. Revisei, rodei localmente e no GitHub Actions."
+    },
+    {
+      "Etapa": "Exibição dos resultados: painel ([link](https://verzel-store-qa-painel.lovable.app))",
+      "Usei IA?": "Sim (Lovable)",
+      "Como": "Usei o **Lovable** para criar o painel que exibe os resultados: visão geral, cenários, bugs, observações, evidências e automação. O prompt foi escrito com apoio do Claude. O painel só exibe dados: lê o `docs/resultados.json` e as evidências direto deste repositório, sem cálculo ou alteração dos resultados."
+    },
+    {
+      "Etapa": "Revisão final",
+      "Usei IA?": "Sim, em conjunto",
+      "Como": "Revisão cruzada das entregas antes do envio."
+    }
+  ],
+  "galeria": [
+    {
+      "arquivo": "docs/evidencias/ui/BUG01_200_com_cupom.png",
+      "titulo": "Subtotal R$ 200,00 com cupom cobrando frete",
+      "cenario": "CT12",
+      "cenarioTitulo": "Valor-limite do frete grátis (R$ 199,80 / 200,00 / 219,80)",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG01"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/BUG03_banner_primeira_compra.png",
+      "titulo": "Banner \"na primeira compra\"",
+      "cenario": "CT30",
+      "cenarioTitulo": "Comunicação da promoção na home segue a regra",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG03"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/BUG06_1_carrinho_vazio.png",
+      "titulo": "1. Carrinho vazio após remover o item",
+      "cenario": "CT31",
+      "cenarioTitulo": "Cupom é removido quando o carrinho fica vazio",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG06"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/BUG06_2_cupom_continua_aplicado.png",
+      "titulo": "2. Cupom continua aplicado",
+      "cenario": "CT31",
+      "cenarioTitulo": "Cupom é removido quando o carrinho fica vazio",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG06"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/BUG06_3_esvaziar_remove_cupom.png",
+      "titulo": "3. \"Esvaziar carrinho\" remove o cupom",
+      "cenario": "CT31",
+      "cenarioTitulo": "Cupom é removido quando o carrinho fica vazio",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG06"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT01_cupom_valido.png",
+      "titulo": "Cupom BEMVINDO10 aplicado (10%)",
+      "cenario": "CT01",
+      "cenarioTitulo": "Cupom válido aplica 10% sobre o subtotal",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT02_cupom_normalizado.png",
+      "titulo": "Cupom em minúsculas aceito",
+      "cenario": "CT02",
+      "cenarioTitulo": "Código não diferencia maiúsculas de minúsculas",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT03_cupom_normalizado.png",
+      "titulo": "Cupom com espaços aceito",
+      "cenario": "CT03",
+      "cenarioTitulo": "Espaços no início e no fim são ignorados",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT05_cupom_xpto.png",
+      "titulo": "Cupom inexistente: \"Cupom inválido.\"",
+      "cenario": "CT05",
+      "cenarioTitulo": "Cupom inexistente mostra \"Cupom inválido.\"",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT06_cupom_verao2026.png",
+      "titulo": "Cupom expirado: \"Cupom expirado.\"",
+      "cenario": "CT06",
+      "cenarioTitulo": "Cupom expirado mostra \"Cupom expirado.\"",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT07_cupom_vazio.png",
+      "titulo": "Campo vazio: \"Informe um cupom.\"",
+      "cenario": "CT07",
+      "cenarioTitulo": "Campo vazio pede para informar um cupom",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT08_um_cupom_por_vez.png",
+      "titulo": "Um cupom por vez",
+      "cenario": "CT08",
+      "cenarioTitulo": "Apenas um cupom por vez",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT09_trocar_cupom.png",
+      "titulo": "Remover e trocar o cupom",
+      "cenario": "CT09",
+      "cenarioTitulo": "Remover o cupom e aplicar outro",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT12_BUG01_frete_200.png",
+      "titulo": "Subtotal R$ 200,00 cobrando frete",
+      "cenario": "CT12",
+      "cenarioTitulo": "Valor-limite do frete grátis (R$ 199,80 / 200,00 / 219,80)",
+      "resultado": "falhou",
+      "bugs": [
+        "BUG01"
+      ]
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT13_faltante_frete.png",
+      "titulo": "Abaixo de R$ 200: quanto falta",
+      "cenario": "CT13",
+      "cenarioTitulo": "Abaixo de R$ 200,00 informa quanto falta",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT14_frete_antes_do_desconto.png",
+      "titulo": "Frete grátis antes do desconto",
+      "cenario": "CT14",
+      "cenarioTitulo": "Frete grátis usa o subtotal antes do desconto",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT18_limite_carrinho.png",
+      "titulo": "Limite de 5 unidades no carrinho",
+      "cenario": "CT18",
+      "cenarioTitulo": "Interface limita 5 unidades por produto",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT18_limite_vitrine.png",
+      "titulo": "Limite de 5 unidades na vitrine",
+      "cenario": "CT18",
+      "cenarioTitulo": "Interface limita 5 unidades por produto",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT25_pedido_confirmado.png",
+      "titulo": "Pedido confirmado",
+      "cenario": "CT25",
+      "cenarioTitulo": "Pedido com cupom confirmado com os valores do carrinho",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT26_validacao_cliente.png",
+      "titulo": "Validação dos dados do cliente",
+      "cenario": "CT26",
+      "cenarioTitulo": "Dados do cliente inválidos bloqueiam o pedido na tela",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT29_tela_igual_api.png",
+      "titulo": "Valores da tela iguais aos da API",
+      "cenario": "CT29",
+      "cenarioTitulo": "Valores da tela iguais aos da API",
+      "resultado": "passou",
+      "bugs": []
+    }
+  ],
+  "documentos": [
+    {
+      "titulo": "Análise da documentação",
+      "arquivo": "docs/01-analise-da-documentacao.md"
+    },
+    {
+      "titulo": "Cenários (Gherkin)",
+      "arquivo": "docs/02-cenarios.feature"
+    },
+    {
+      "titulo": "Execução",
+      "arquivo": "docs/03-execucao.md"
+    },
+    {
+      "titulo": "Bugs",
+      "arquivo": "docs/04-bugs.md"
+    },
+    {
+      "titulo": "Uso de IA",
+      "arquivo": "docs/05-uso-de-ia.md"
     }
   ]
 }
