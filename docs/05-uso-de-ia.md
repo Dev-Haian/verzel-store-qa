@@ -1,21 +1,13 @@
 # 5. Uso de IA
 
-As regras do teste permitem o uso de IA, desde que informado. Usei o **Claude** (Anthropic) como par de trabalho. Abaixo, onde e como.
+As regras do teste permitem o uso de IA, desde que informado. Usei o **Claude** (Anthropic) como apoio ao longo do trabalho e o **Lovable** para montar o painel de resultados. Abaixo, o que fiz e onde a IA entrou em cada etapa.
 
 | Etapa | Usei IA? | Como |
 |---|---|---|
-| Estrutura do repositório, modelos de documento e configuração do Playwright/CI | Sim | Gerou o esqueleto do repositório, os modelos e o `playwright.config.ts`. |
-| Leitura da documentação e levantamento das ambiguidades | Sim, em conjunto | Li a documentação e levantei pontos. O Claude listou as ambiguidades, e eu revisei e decidi as interpretações. |
-| Primeiros testes exploratórios | Não | Fiz na loja e encontrei o frete cobrado com R$ 200,00 (BUG01). Com a IA, separei o que era bug do que era regra (o "Faltam R$ 20,30" estava correto). |
-| Escrita dos cenários em Gherkin | Sim | O Claude escreveu os cenários a partir das regras e da análise. Revisei os nomes, as prioridades e a cobertura. |
-| Execução na API | Sim | O Claude executou as chamadas na API e montou a collection do Postman, que eu rodo no Postman e pelo Newman. |
-| Execução na interface | Sim | O Claude automatizou e executou os fluxos com Playwright e capturou as evidências. Conferi os prints e repeti os principais bugs manualmente na loja. |
-| Report dos bugs | Sim | O Claude redigiu os reports a partir dos resultados. Revisei a severidade, a prioridade e a recomendação final. |
-| Automação (Playwright + Postman) | Sim | O Claude escreveu os testes. Revisei, rodei localmente e no GitHub Actions. |
+| Estrutura do repositório e documentação | Sim, em conjunto | A estrutura do repositório foi baseada em outro projeto que eu já tinha feito. A documentação partiu do que o Claude gerou com o contexto que ele já tinha do meu trabalho. Complementei e refinei o que foi gerado e sugeri uma forma melhor de visualizar os resultados, em um dashboard. |
+| Leitura da documentação e levantamento das ambiguidades | Sim, em conjunto | A leitura e o levantamento foram feitos tanto por mim quanto pelo Claude. Depois definimos juntos o que era e o que não era ambíguo e qual interpretação seguir. |
+| Testes exploratórios e cenários | Sim, em conjunto | Fiz os primeiros testes exploratórios na loja e encontrei um bug: o frete cobrado com subtotal de exatamente R$ 200,00 (BUG01). Depois disso, defini os principais cenários e os refinei com o Claude seguindo os padrões do Gherkin. |
+| Execução na API | Sim, em conjunto | Depois de entender a API, a cobertura foi feita no Postman junto com o Claude, para que os testes pudessem ser executados. Também testei diretamente no Postman procurando erros na API. |
+| Execução na interface | Sim, em conjunto | A execução foi feita tanto manualmente quanto por automação (Playwright). Os prints de evidência foram tirados pelo Playwright e também manualmente. |
+| Report dos bugs | Sim, em conjunto | Defini o padrão do report, e o Claude adaptou esse padrão a cada problema encontrado. |
 | Exibição dos resultados: painel ([link](https://verzel-store-qa-painel.lovable.app)) | Sim (Lovable) | Usei o **Lovable** para criar o painel que exibe os resultados: visão geral, cenários, bugs, observações, evidências e automação. O prompt foi escrito com apoio do Claude. O painel só exibe dados: lê o `docs/resultados.json` e as evidências direto deste repositório, sem cálculo ou alteração dos resultados. |
-| Revisão técnica e melhorias | Sim | Recebi uma revisão técnica da entrega com pontos de melhoria. O Claude conferiu cada ponto no repositório antes de mudar qualquer coisa. Corrigiu o Gherkin, que tinha várias `Funcionalidade` num arquivo só e agora passa no parser oficial. Tirou o `continue-on-error` do CI e criou uma política explícita para bugs conhecidos. Trocou o `test.fail()`, incluiu testes de transição de estado e um cálculo independente em centavos e reclassificou os achados (confirmado × divergência × a confirmar). Decidi junto quais pontos aplicar. |
-| Revisão final | Sim, em conjunto | Revisão cruzada das entregas antes do envio. |
-
-**O que eu garanti:** cada bug foi reproduzido por mim na loja ou no Postman antes de entrar no repositório, e as interpretações das ambiguidades (docs/01, seção 1.4) são decisões minhas.
-
-> Revisar esta tabela antes do envio para que ela reflita exatamente o que foi feito por você e o que foi feito pela IA.
