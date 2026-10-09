@@ -6,8 +6,8 @@
   "executadoEm": "2026-10-08",
   "executadoPor": "Haian Vilas Boas",
   "resumo": {
-    "cenarios": 32,
-    "passou": 27,
+    "cenarios": 36,
+    "passou": 31,
     "falhou": 5,
     "bloqueado": 0,
     "bugs": {
@@ -17,21 +17,30 @@
       "media": 1,
       "baixa": 3
     },
+    "classificacao": {
+      "confirmados": 3,
+      "divergencias": 1,
+      "aConfirmar": 2
+    },
     "observacoes": 7
   },
   "automacao": {
     "playwright": {
-      "testes": 17,
-      "passou": 16,
-      "falhaEsperada": 1,
-      "nota": "CT12 marcado com test.fail enquanto o BUG01 existir"
+      "testes": 24,
+      "passou": 24,
+      "falhou": 0,
+      "instaveis": 0,
+      "guardasDeBugConhecido": 1,
+      "nota": "Sem test.fail(): o teste do BUG01 afirma o comportamento atual e falha quando o bug for corrigido."
     },
     "postman": {
-      "requisicoes": 46,
-      "assercoes": 272,
+      "requisicoes": 48,
+      "assercoes": 289,
       "assercoesFalharam": 25,
       "requisicoesFalharam": 7,
-      "nota": "As 7 requisições que falham são as marcadas com [BUG01], [BUG02], [BUG04] e [BUG05]"
+      "falhasInesperadas": 0,
+      "veredito": "passou",
+      "nota": "Só falham as requisições marcadas com [BUGxx]; qualquer outra falha deixa o pipeline vermelho (scripts/api.mjs)."
     }
   },
   "cenarios": [
@@ -229,7 +238,7 @@
     {
       "id": "CT09",
       "funcionalidade": "Cupom",
-      "titulo": "Remover o cupom e aplicar outro",
+      "titulo": "Remover o cupom e aplicar outro, sem desconto residual",
       "regra": "CA05",
       "prioridade": "Média",
       "camadas": "UI",
@@ -465,7 +474,7 @@
     {
       "id": "CT19",
       "funcionalidade": "Quantidade",
-      "titulo": "API recusa mais de 5 unidades",
+      "titulo": "API aplica o limite de 5 unidades a cada produto",
       "regra": "CA10",
       "prioridade": "Alta",
       "camadas": "API",
@@ -477,7 +486,7 @@
       "evidencias": [
         "docs/evidencias/api/relatorio-newman.html"
       ],
-      "gherkin": "Esquema do Cenário: A API recusa mais de 5 unidades\n  Quando envio <quantidade> unidades de \"P001\" para \"<endpoint>\"\n  Então a API responde <status>\n\n  Exemplos:\n    | quantidade | endpoint               | status                                | resultado |\n    | 5          | /api/carrinho/calcular | 200                                   | passou    |\n    | 6          | /api/carrinho/calcular | 422 QUANTIDADE_MAXIMA_EXCEDIDA        | falhou    |\n    | 6          | /api/pedidos           | 422 QUANTIDADE_MAXIMA_EXCEDIDA        | falhou    |",
+      "gherkin": "Esquema do Cenário: A API aplica o limite de 5 unidades a cada produto\n  Quando envio <itens> para \"<endpoint>\"\n  Então a API responde <status>\n\n  Exemplos:\n    | itens                 | endpoint               | status                         | resultado |\n    | 1 × P001              | /api/carrinho/calcular | 200                            | passou    |\n    | 5 × P001              | /api/carrinho/calcular | 200                            | passou    |\n    | 5 × P001 e 5 × P002   | /api/carrinho/calcular | 200 (limite é por produto)     | passou    |\n    | 6 × P001              | /api/carrinho/calcular | 422 QUANTIDADE_MAXIMA_EXCEDIDA | falhou    |\n    | 6 × P001              | /api/pedidos           | 422 QUANTIDADE_MAXIMA_EXCEDIDA | falhou    |",
       "tags": [
         "@CT19",
         "@CA10",
@@ -692,7 +701,7 @@
     {
       "id": "CT29",
       "funcionalidade": "Frete grátis",
-      "titulo": "Valores da tela iguais aos da API",
+      "titulo": "Tela, API e regra de negócio chegam aos mesmos valores",
       "regra": "CA01, CA06",
       "prioridade": "Alta",
       "camadas": "UI",
@@ -789,6 +798,95 @@
         "@BUG04",
         "@BUG05"
       ]
+    },
+    {
+      "id": "CT33",
+      "funcionalidade": "Transições de estado",
+      "titulo": "Alterar a quantidade com o cupom aplicado recalcula tudo",
+      "regra": "CA01, CA07",
+      "prioridade": "Alta",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT33_quantidade_com_cupom.png"
+      ],
+      "gherkin": "Cenário: Alterar a quantidade com o cupom aplicado recalcula todos os valores\n  Dado que o carrinho tem 1 \"Camiseta Essencial\" e o cupom \"BEMVINDO10\" aplicado\n  Quando aumento a quantidade para 2\n  Então o subtotal é R$ 119,80, o desconto R$ 11,98, o frete R$ 19,90 e o total R$ 127,72\n  E vejo \"Faltam R$ 80,20 para o frete grátis.\"\n  Quando diminuo a quantidade para 1\n  Então o desconto volta a R$ 5,99 e o total a R$ 73,81",
+      "tags": [
+        "@CT33",
+        "@CA01",
+        "@CA07",
+        "@alta",
+        "@ui",
+        "@playwright"
+      ]
+    },
+    {
+      "id": "CT34",
+      "funcionalidade": "Transições de estado",
+      "titulo": "Remover um produto com o cupom aplicado recalcula tudo",
+      "regra": "CA01, CA06",
+      "prioridade": "Alta",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT34_remover_produto_com_cupom.png"
+      ],
+      "gherkin": "Cenário: Remover um produto com o cupom aplicado recalcula todos os valores\n  Dado que o carrinho tem 1 \"Camiseta Essencial\", 1 \"Calça Jeans Slim\" e o cupom \"BEMVINDO10\" aplicado\n  E o subtotal é R$ 199,80 com desconto de R$ 19,98\n  Quando removo a \"Calça Jeans Slim\"\n  Então o subtotal é R$ 59,90, o desconto R$ 5,99, o frete R$ 19,90 e o total R$ 73,81\n  E o cupom continua aplicado",
+      "tags": [
+        "@CT34",
+        "@CA01",
+        "@CA06",
+        "@alta",
+        "@ui",
+        "@playwright"
+      ]
+    },
+    {
+      "id": "CT35",
+      "funcionalidade": "Transições de estado",
+      "titulo": "Recarregar a página mantém o carrinho e o cupom da aba",
+      "regra": "CA05",
+      "prioridade": "Média",
+      "camadas": "UI",
+      "automacao": "Playwright",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [],
+      "gherkin": "Cenário: Recarregar a página mantém o carrinho e o cupom da aba\n  # \"Sobre este ambiente\": o carrinho fica guardado na aba do navegador.\n  Dado que o carrinho tem 1 \"Camiseta Essencial\" e o cupom \"BEMVINDO10\" aplicado\n  Quando recarrego a página do carrinho\n  Então o item, o cupom e os valores continuam os mesmos",
+      "tags": [
+        "@CT35",
+        "@CA05",
+        "@media",
+        "@ui",
+        "@playwright"
+      ]
+    },
+    {
+      "id": "CT36",
+      "funcionalidade": "Pedido",
+      "titulo": "Pedido recusado pela API (422 / 500) não mostra confirmação",
+      "regra": "CA03, CA04",
+      "prioridade": "Média",
+      "camadas": "UI",
+      "automacao": "Playwright (API simulada)",
+      "resultado": "passou",
+      "bugs": [],
+      "evidencias": [
+        "docs/evidencias/ui/CT36_pedido_recusado.png"
+      ],
+      "gherkin": "Esquema do Cenário: Pedido recusado pela API não mostra confirmação\n  # A API real só recusa cupom no pedido se a tela deixar passar; aqui a resposta é simulada.\n  Dado que estou no checkout com 1 \"Camiseta Essencial\" e o cupom \"BEMVINDO10\"\n  E a API de pedidos vai responder <status>\n  Quando confirmo o pedido com dados válidos\n  Então continuo no checkout e vejo \"<mensagem>\"\n  E o carrinho continua com o item e o cupom\n\n  Exemplos:\n    | status                 | mensagem                                              |\n    | 422 CUPOM_EXPIRADO     | Cupom expirado.                                       |\n    | 500 (erro do servidor) | Não foi possível confirmar o pedido. Tente novamente. |",
+      "tags": [
+        "@CT36",
+        "@CA03",
+        "@CA04",
+        "@media",
+        "@ui",
+        "@playwright"
+      ]
     }
   ],
   "bugs": [
@@ -800,7 +898,8 @@
       "cenario": "CT12",
       "regra": "CA06",
       "onde": "API, carrinho, checkout e pedido",
-      "status": "Aberto"
+      "status": "Aberto",
+      "classificacao": "Defeito confirmado"
     },
     {
       "id": "BUG02",
@@ -810,7 +909,8 @@
       "cenario": "CT19",
       "regra": "CA10",
       "onde": "API (/carrinho/calcular e /pedidos)",
-      "status": "Aberto"
+      "status": "Aberto",
+      "classificacao": "Defeito confirmado"
     },
     {
       "id": "BUG03",
@@ -820,7 +920,8 @@
       "cenario": "CT30",
       "regra": "CA01",
       "onde": "Interface (home)",
-      "status": "Aberto"
+      "status": "Aberto · aguardando Produto",
+      "classificacao": "Divergência (decisão de Produto)"
     },
     {
       "id": "BUG04",
@@ -830,7 +931,8 @@
       "cenario": "CT32",
       "regra": "RE01",
       "onde": "API e interface (checkout)",
-      "status": "Aberto"
+      "status": "Aberto · aguardando confirmação",
+      "classificacao": "A confirmar (requisito não definido)"
     },
     {
       "id": "BUG05",
@@ -840,7 +942,8 @@
       "cenario": "CT32",
       "regra": "RE02",
       "onde": "API e interface (checkout)",
-      "status": "Aberto"
+      "status": "Aberto",
+      "classificacao": "Defeito confirmado"
     },
     {
       "id": "BUG06",
@@ -850,7 +953,8 @@
       "cenario": "CT31",
       "regra": "CA05",
       "onde": "Interface (carrinho)",
-      "status": "Aberto"
+      "status": "Aberto · aguardando confirmação",
+      "classificacao": "A confirmar (requisito não definido)"
     }
   ],
   "observacoes": [
@@ -1107,7 +1211,9 @@
     "estrategia": [
       "**Prioridade:** regras de cálculo (valor errado = prejuízo ou reclamação) > fluxo de compra > mensagens e usabilidade.",
       "**Técnicas:** particionamento de equivalência, **análise de valor-limite** nos R$ 200,00 e nas 5 unidades, testes negativos, conferência de 40 carrinhos aleatórios contra um cálculo independente e sessões de teste exploratório.",
-      "**Camadas:** interface (Playwright) e API (Postman/Newman), conferindo se o valor exibido na tela é o mesmo retornado pela API.",
+      "**Camadas:** interface (Playwright) e API (Postman/Newman), conferindo se o valor exibido na tela é o mesmo retornado pela API e o mesmo de um cálculo independente da regra, feito em centavos inteiros (`tests/ui/support/calculo.ts`).",
+      "**Transições de estado:** alterar a quantidade, remover produto e recarregar com o cupom aplicado, além do tratamento de erro da API no pedido, onde costumam aparecer defeitos que testes isolados não pegam.",
+      "**Classificação dos achados:** separo defeito confirmado (viola regra escrita), divergência entre fontes (decisão de Produto) e achado a confirmar (requisito não definido), para não apresentar suposição como requisito.",
       "**Fora do escopo:** carga, estresse e segurança (regra do teste). As chamadas foram feitas com intervalo entre elas para não sobrecarregar o ambiente compartilhado."
     ]
   },
@@ -1131,7 +1237,7 @@
       },
       {
         "campo": "Data",
-        "valor": "08/10/2026"
+        "valor": "08/10/2026 (execução inicial) e 09/10/2026 (reexecução completa após a revisão técnica)"
       },
       {
         "campo": "Executado por",
@@ -1243,6 +1349,11 @@
       "Etapa": "Exibição dos resultados: painel ([link](https://verzel-store-qa-painel.lovable.app))",
       "Usei IA?": "Sim (Lovable)",
       "Como": "Usei o **Lovable** para criar o painel que exibe os resultados: visão geral, cenários, bugs, observações, evidências e automação. O prompt foi escrito com apoio do Claude. O painel só exibe dados: lê o `docs/resultados.json` e as evidências direto deste repositório, sem cálculo ou alteração dos resultados."
+    },
+    {
+      "Etapa": "Revisão técnica e melhorias",
+      "Usei IA?": "Sim",
+      "Como": "Recebi uma revisão técnica da entrega com pontos de melhoria. O Claude conferiu cada ponto no repositório antes de mudar qualquer coisa. Corrigiu o Gherkin, que tinha várias `Funcionalidade` num arquivo só e agora passa no parser oficial. Tirou o `continue-on-error` do CI e criou uma política explícita para bugs conhecidos. Trocou o `test.fail()`, incluiu testes de transição de estado e um cálculo independente em centavos e reclassificou os achados (confirmado × divergência × a confirmar). Decidi junto quais pontos aplicar."
     },
     {
       "Etapa": "Revisão final",
@@ -1359,9 +1470,9 @@
     },
     {
       "arquivo": "docs/evidencias/ui/CT09_trocar_cupom.png",
-      "titulo": "Remover e trocar o cupom",
+      "titulo": "Remover e trocar o cupom, sem desconto residual",
       "cenario": "CT09",
-      "cenarioTitulo": "Remover o cupom e aplicar outro",
+      "cenarioTitulo": "Remover o cupom e aplicar outro, sem desconto residual",
       "resultado": "passou",
       "bugs": []
     },
@@ -1427,7 +1538,31 @@
       "arquivo": "docs/evidencias/ui/CT29_tela_igual_api.png",
       "titulo": "Valores da tela iguais aos da API",
       "cenario": "CT29",
-      "cenarioTitulo": "Valores da tela iguais aos da API",
+      "cenarioTitulo": "Tela, API e regra de negócio chegam aos mesmos valores",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT33_quantidade_com_cupom.png",
+      "titulo": "Quantidade alterada com cupom: tudo recalculado",
+      "cenario": "CT33",
+      "cenarioTitulo": "Alterar a quantidade com o cupom aplicado recalcula tudo",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT34_remover_produto_com_cupom.png",
+      "titulo": "Produto removido com cupom: tudo recalculado",
+      "cenario": "CT34",
+      "cenarioTitulo": "Remover um produto com o cupom aplicado recalcula tudo",
+      "resultado": "passou",
+      "bugs": []
+    },
+    {
+      "arquivo": "docs/evidencias/ui/CT36_pedido_recusado.png",
+      "titulo": "Pedido recusado pela API: sem confirmação",
+      "cenario": "CT36",
+      "cenarioTitulo": "Pedido recusado pela API (422 / 500) não mostra confirmação",
       "resultado": "passou",
       "bugs": []
     }

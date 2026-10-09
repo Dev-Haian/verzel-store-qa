@@ -85,5 +85,7 @@ As regras do teste pedem que, diante de ambiguidade, eu registre a minha interpr
 
 - **Prioridade:** regras de cálculo (valor errado = prejuízo ou reclamação) > fluxo de compra > mensagens e usabilidade.
 - **Técnicas:** particionamento de equivalência, **análise de valor-limite** nos R$ 200,00 e nas 5 unidades, testes negativos, conferência de 40 carrinhos aleatórios contra um cálculo independente e sessões de teste exploratório.
-- **Camadas:** interface (Playwright) e API (Postman/Newman), conferindo se o valor exibido na tela é o mesmo retornado pela API.
+- **Camadas:** interface (Playwright) e API (Postman/Newman), conferindo se o valor exibido na tela é o mesmo retornado pela API e o mesmo de um cálculo independente da regra, feito em centavos inteiros (`tests/ui/support/calculo.ts`).
+- **Transições de estado:** alterar a quantidade, remover produto e recarregar com o cupom aplicado, além do tratamento de erro da API no pedido, onde costumam aparecer defeitos que testes isolados não pegam.
+- **Classificação dos achados:** separo defeito confirmado (viola regra escrita), divergência entre fontes (decisão de Produto) e achado a confirmar (requisito não definido), para não apresentar suposição como requisito.
 - **Fora do escopo:** carga, estresse e segurança (regra do teste). As chamadas foram feitas com intervalo entre elas para não sobrecarregar o ambiente compartilhado.

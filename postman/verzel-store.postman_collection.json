@@ -1017,6 +1017,57 @@
       "name": "04 · Quantidade",
       "item": [
         {
+          "name": "CT19 · Quantidade 1 é aceita",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrinho/calcular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrinho",
+                "calcular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itens\": [\n    {\n      \"produtoId\": \"P001\",\n      \"quantidade\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const b = pm.response.json();",
+                  "pm.test('CT19 · status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('CT19 · subtotal = 59.9', () => pm.expect(b.subtotal).to.eql(59.9));",
+                  "pm.test('CT19 · desconto = 0', () => pm.expect(b.desconto).to.eql(0));",
+                  "pm.test('CT19 · frete = 19.9', () => pm.expect(b.frete).to.eql(19.9));",
+                  "pm.test('CT19 · freteGratis = false', () => pm.expect(b.freteGratis).to.eql(false));",
+                  "pm.test('CT19 · valorFaltanteFreteGratis = 140.1', () => pm.expect(b.valorFaltanteFreteGratis).to.eql(140.1));",
+                  "pm.test('CT19 · total = 79.8', () => pm.expect(b.total).to.eql(79.8));",
+                  "pm.test('CT19 · total = subtotal - desconto + frete', () => pm.expect(b.total).to.eql(Math.round((b.subtotal - b.desconto + b.frete) * 100) / 100));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "CT19 · Quantidade 5 é aceita",
           "request": {
             "method": "POST",
@@ -1062,6 +1113,58 @@
                   "pm.test('CT19 · valorFaltanteFreteGratis = 0', () => pm.expect(b.valorFaltanteFreteGratis).to.eql(0));",
                   "pm.test('CT19 · total = 299.5', () => pm.expect(b.total).to.eql(299.5));",
                   "pm.test('CT19 · total = subtotal - desconto + frete', () => pm.expect(b.total).to.eql(Math.round((b.subtotal - b.desconto + b.frete) * 100) / 100));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "CT19 · 5 unidades de dois produtos são aceitas (limite por produto)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/carrinho/calcular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "carrinho",
+                "calcular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itens\": [\n    {\n      \"produtoId\": \"P001\",\n      \"quantidade\": 5\n    },\n    {\n      \"produtoId\": \"P002\",\n      \"quantidade\": 5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const b = pm.response.json();",
+                  "pm.test('CT19 · status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('CT19 · subtotal = 999', () => pm.expect(b.subtotal).to.eql(999));",
+                  "pm.test('CT19 · desconto = 0', () => pm.expect(b.desconto).to.eql(0));",
+                  "pm.test('CT19 · frete = 0', () => pm.expect(b.frete).to.eql(0));",
+                  "pm.test('CT19 · freteGratis = true', () => pm.expect(b.freteGratis).to.eql(true));",
+                  "pm.test('CT19 · valorFaltanteFreteGratis = 0', () => pm.expect(b.valorFaltanteFreteGratis).to.eql(0));",
+                  "pm.test('CT19 · total = 999', () => pm.expect(b.total).to.eql(999));",
+                  "pm.test('CT19 · total = subtotal - desconto + frete', () => pm.expect(b.total).to.eql(Math.round((b.subtotal - b.desconto + b.frete) * 100) / 100));",
+                  "pm.test('CT19 · os dois itens com 5 unidades', () => pm.expect(b.itens.map(i => i.quantidade)).to.eql([5, 5]));"
                 ]
               }
             }

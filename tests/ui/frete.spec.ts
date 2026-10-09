@@ -15,20 +15,27 @@ test.describe('Frete grátis', () => {
     await evidencia(page, testInfo, 'CT13_faltante_frete');
   });
 
-  test('CT12 · subtotal de exatamente R$ 200,00 tem frete grátis', async ({ page }, testInfo) => {
-    // BUG01: a API trata o limite como "maior que" e cobra R$ 19,90 quando o subtotal é R$ 200,00.
-    // test.fail(): o teste passa enquanto o bug existir e avisa quando ele for corrigido.
-    test.fail(true, 'BUG01 · frete cobrado com subtotal exatamente R$ 200,00');
-    testInfo.annotations.push({ type: 'bug', description: 'BUG01' });
-
+  test('CT12 · subtotal de R$ 199,80 (logo abaixo do limite) cobra frete', async ({ page }) => {
     const loja = new Loja(page);
-    await loja.adicionar('P005', 2); // 2 x 100,00 = 200,00
+    await loja.adicionar('P001'); // 59,90
+    await loja.adicionar('P002'); // 139,90 → 199,80
     await loja.abrirCarrinho();
-    await expect(loja.valor('subtotal')).toHaveText('R$ 200,00');
-    await evidencia(page, testInfo, 'CT12_BUG01_frete_200');
 
-    await expect(loja.valor('frete')).toHaveText('Grátis', { timeout: 3_000 });
-    await expect(loja.valor('total')).toHaveText('R$ 200,00', { timeout: 3_000 });
+    await expect(loja.valor('subtotal')).toHaveText('R$ 199,80');
+    await expect(loja.valor('frete')).toHaveText('R$ 19,90');
+    await expect(loja.avisoFrete).toHaveText('Faltam R$ 0,20 para o frete grátis.');
+  });
+
+  test('CT12 · subtotal de R$ 219,80 (acima do limite) tem frete grátis', async ({ page }) => {
+    const loja = new Loja(page);
+    await loja.adicionar('P003'); // 189,90
+    await loja.adicionar('P006'); // 29,90 → 219,80
+    await loja.abrirCarrinho();
+
+    await expect(loja.valor('subtotal')).toHaveText('R$ 219,80');
+    await expect(loja.valor('frete')).toHaveText('Grátis');
+    await expect(loja.valor('total')).toHaveText('R$ 219,80');
+    await expect(loja.avisoFrete).toHaveCount(0);
   });
 
   test('CT14 · frete grátis considera o subtotal antes do desconto do cupom', async ({ page }, testInfo) => {
@@ -46,7 +53,7 @@ test.describe('Frete grátis', () => {
     await evidencia(page, testInfo, 'CT14_frete_antes_do_desconto');
   });
 
-  test('CT15 · o desconto não incide sobre o frete', async ({ page }, testInfo) => {
+  test('CT15 · o desconto não incide sobre o frete', async ({ page }) => {
     const loja = new Loja(page);
     await loja.adicionar('P005'); // 100,00
     await loja.abrirCarrinho();
@@ -55,5 +62,29 @@ test.describe('Frete grátis', () => {
     // 10% de 100,00 = 10,00. Se incidisse sobre o frete, seria 11,99.
     await expect(loja.valor('desconto')).toHaveText('- R$ 10,00');
     await expect(loja.valor('total')).toHaveText('R$ 109,90');
+  });
+});
+
+/**
+ * Bugs conhecidos (docs/04-bugs.md).
+ *
+ * Estes testes NÃO usam test.fail(): eles afirmam o comportamento ATUAL, que está errado,
+ * e por isso passam enquanto o bug existir. Assim, qualquer outro problema (navegação, timeout,
+ * tela diferente) aparece como falha real. Quando o bug for corrigido, o teste falha avisando;
+ * aí basta trocar as asserções pelo comportamento esperado indicado em cada um.
+ */
+test.describe('Bugs conhecidos', () => {
+  test('BUG01 · CT12 · com subtotal de exatamente R$ 200,00 a loja ainda cobra frete', async ({ page }, testInfo) => {
+    testInfo.annotations.push({ type: 'bug conhecido', description: 'BUG01 · esperado: frete Grátis e total R$ 200,00 (CA06)' });
+    const loja = new Loja(page);
+    await loja.adicionar('P005', 2); // 2 x 100,00 = 200,00
+    await loja.abrirCarrinho();
+    await expect(loja.valor('subtotal')).toHaveText('R$ 200,00');
+
+    // Comportamento atual (errado). Esperado pela CA06: frete "Grátis" e total "R$ 200,00".
+    await expect(loja.valor('frete')).toHaveText('R$ 19,90');
+    await expect(loja.valor('total')).toHaveText('R$ 219,90');
+    await expect(loja.avisoFrete).toHaveText('Faltam R$ 0,00 para o frete grátis.');
+    await evidencia(page, testInfo, 'CT12_BUG01_frete_200');
   });
 });

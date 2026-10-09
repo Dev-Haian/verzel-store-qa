@@ -4,21 +4,27 @@
 
 **Severidade** (impacto no negócio): Crítica · Alta · Média · Baixa
 **Prioridade** (urgência sugerida de correção): P1 · P2 · P3
+**Classificação** (o quanto o requisito sustenta o achado):
+- **Defeito confirmado:** viola uma regra escrita na documentação.
+- **Divergência (decisão de Produto):** duas fontes oficiais dizem coisas diferentes, e o Produto precisa decidir qual vale.
+- **A confirmar (requisito não definido):** o comportamento parece errado, mas a regra não define o resultado esperado. Registrei a minha interpretação, e o achado só vira defeito depois de confirmado.
 
 **Ambiente de todos os bugs:** https://verzel-store.qa-test-verzel-store.workers.dev · Chromium 141 · API via Postman/Newman · 08/10/2026
 
 ## Resumo
 
-| ID | Título | Severidade | Prioridade | Cenário | Regra | Status |
-|---|---|---|---|---|---|---|
-| [BUG01](#bug01) | Frete de R$ 19,90 é cobrado quando o subtotal é exatamente R$ 200,00 | **Alta** | P1 | CT12 | CA06 | Aberto |
-| [BUG02](#bug02) | API aceita mais de 5 unidades do mesmo produto | **Alta** | P1 | CT19 | CA10 | Aberto |
-| [BUG03](#bug03) | Home anuncia BEMVINDO10 só "na primeira compra", regra que não existe na entrega | Média | P2 | CT30 | CA01 | Aberto |
-| [BUG04](#bug04) | Nome formado só por números é aceito como nome e sobrenome | Baixa | P3 | CT32 | RE01 | Aberto |
-| [BUG05](#bug05) | E-mail com pontos seguidos no domínio é aceito | Baixa | P3 | CT32 | RE02 | Aberto |
-| [BUG06](#bug06) | Cupom continua aplicado depois de remover todos os itens um a um | Baixa | P3 | CT31 | CA05 | Aberto |
+| ID | Título | Classificação | Severidade | Prioridade | Cenário | Regra | Status |
+|---|---|---|---|---|---|---|---|
+| [BUG01](#bug01) | Frete de R$ 19,90 é cobrado quando o subtotal é exatamente R$ 200,00 | **Defeito confirmado** | **Alta** | P1 | CT12 | CA06 | Aberto |
+| [BUG02](#bug02) | API aceita mais de 5 unidades do mesmo produto | **Defeito confirmado** | **Alta** | P1 | CT19 | CA10 | Aberto |
+| [BUG03](#bug03) | Home anuncia BEMVINDO10 só "na primeira compra", regra que não existe na entrega | Divergência (decisão de Produto) | Média | P2 | CT30 | CA01 | Aberto · aguardando Produto |
+| [BUG04](#bug04) | Nome formado só por números é aceito como nome e sobrenome | A confirmar (requisito não definido) | Baixa | P3 | CT32 | RE01 | Aberto · aguardando confirmação |
+| [BUG05](#bug05) | E-mail com pontos seguidos no domínio é aceito | **Defeito confirmado** | Baixa | P3 | CT32 | RE02 | Aberto |
+| [BUG06](#bug06) | Cupom continua aplicado depois de remover todos os itens um a um | A confirmar (requisito não definido) | Baixa | P3 | CT31 | CA05 | Aberto · aguardando confirmação |
 
-**Recomendação:** a entrega **não deve ir para produção** antes da correção do BUG01 e do BUG02. O BUG01 cobra frete do cliente exatamente no valor anunciado pela campanha, e o BUG02 deixa a API aceitar pedidos que a regra proíbe. Os demais podem entrar no próximo ciclo.
+**Em números:** 6 achados, sendo **3 defeitos confirmados** (BUG01, BUG02, BUG05), **1 divergência** que depende de decisão de Produto (BUG03) e **2 achados a confirmar** (BUG04, BUG06). Mantive os IDs dos 6 para não quebrar a rastreabilidade com os cenários, a automação e as evidências.
+
+**Recomendação:** a entrega **não deve ir para produção** antes da correção do BUG01 e do BUG02. O BUG01 cobra frete do cliente exatamente no valor anunciado pela campanha, e o BUG02 deixa a API aceitar pedidos que a regra proíbe. O BUG05 pode entrar no próximo ciclo. O BUG03, o BUG04 e o BUG06 dependem primeiro de uma definição do Produto sobre o resultado esperado.
 
 ---
 
@@ -27,6 +33,7 @@
 
 | | |
 |---|---|
+| **Classificação** | **Defeito confirmado**. Viola o texto da CA06 e a tabela de Regras de cálculo. |
 | **Severidade** | Alta |
 | **Prioridade** | P1 |
 | **Onde** | API (`/carrinho/calcular` e `/pedidos`) e, por consequência, carrinho, checkout e confirmação |
@@ -72,6 +79,7 @@ O cliente que monta o carrinho para atingir exatamente o valor da campanha paga 
 
 | | |
 |---|---|
+| **Classificação** | **Defeito confirmado**. Viola a CA10, que diz explicitamente que a regra vale para a API, e o código de erro documentado nunca é retornado. |
 | **Severidade** | Alta |
 | **Prioridade** | P1 |
 | **Onde** | API (`/carrinho/calcular` e `/pedidos`). A interface bloqueia corretamente (CT18). |
@@ -114,6 +122,7 @@ A validação existe só no front-end. As outras validações de quantidade (0, 
 
 | | |
 |---|---|
+| **Classificação** | **Divergência (decisão de Produto)**. O banner e a documentação da entrega dizem coisas diferentes. Assumi a documentação como fonte (AMB01), mas o Produto precisa decidir qual texto vale: corrigir o banner ou incluir e implementar a regra de primeira compra. |
 | **Severidade** | Média |
 | **Prioridade** | P2 |
 | **Onde** | Interface, banner da página inicial |
@@ -143,6 +152,7 @@ Comunicação comercial divergente da regra. Pode afastar clientes recorrentes o
 
 | | |
 |---|---|
+| **Classificação** | **A confirmar (requisito não definido)**. A RE01 pede "nome e sobrenome" mas não define quais caracteres são válidos. Pela minha interpretação (AMB12), um nome precisa ter letras. Vira defeito se o Produto confirmar esse critério. |
 | **Severidade** | Baixa |
 | **Prioridade** | P3 |
 | **Onde** | API (`/pedidos`) e checkout (que usa a mesma validação) |
@@ -174,6 +184,7 @@ A validação parece só contar palavras: "Maria" e "Maria-Silva" são recusados
 
 | | |
 |---|---|
+| **Classificação** | **Defeito confirmado**. Pontos seguidos no domínio e ponto no início da parte local não formam um e-mail válido em nenhuma definição usual (RFC 5322 / validação HTML). Formatos inválidos reproduzidos: `maria@exemplo..com`, `.maria@exemplo.com`. |
 | **Severidade** | Baixa |
 | **Prioridade** | P3 |
 | **Onde** | API (`/pedidos`) e checkout |
@@ -202,6 +213,7 @@ E-mail impossível de entregar fica gravado no pedido. A validação recusa os c
 
 | | |
 |---|---|
+| **Classificação** | **A confirmar (requisito não definido)**. Nenhuma regra diz o que acontece com o cupom quando o carrinho fica vazio. O achado é a inconsistência entre "Remover" item a item e "Esvaziar carrinho" (AMB13). Vira defeito quando o Produto definir o comportamento esperado. |
 | **Severidade** | Baixa |
 | **Prioridade** | P3 |
 | **Onde** | Interface, carrinho |

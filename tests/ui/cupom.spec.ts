@@ -74,8 +74,11 @@ test.describe('Cupom de desconto', () => {
     await expect(loja.valor('desconto')).toHaveText('R$ 0,00');
     await expect(loja.valor('total')).toHaveText('R$ 119,90');
 
+    // Cupom inválido depois de remover o válido: nenhum desconto residual.
     await loja.aplicarCupom('VERAO2026');
     await expect(loja.areaCupom).toContainText('Cupom expirado.');
+    await expect(loja.valor('desconto')).toHaveText('R$ 0,00');
+    await expect(loja.valor('total')).toHaveText('R$ 119,90');
     await evidencia(page, testInfo, 'CT09_trocar_cupom');
   });
 });

@@ -8,22 +8,23 @@
 | **Entrega** | VZS-142 · versão 2.3.0 |
 | **Navegador** | Chromium 141 (Playwright 1.63) · resolução 1280 × 720 e 1280 × 900 |
 | **API** | Postman (collection em `postman/`) executada com Newman 6.2 |
-| **Data** | 08/10/2026 |
+| **Data** | 08/10/2026 (execução inicial) e 09/10/2026 (reexecução completa após a revisão técnica) |
 | **Executado por** | Haian Vilas Boas |
 
 Legenda: ✅ Passou · ❌ Falhou · ⛔ Bloqueado
 
 ## 3.1 Resumo
 
-| Cenários | ✅ Passou | ❌ Falhou | ⛔ Bloqueado | Bugs | Observações |
+| Cenários | ✅ Passou | ❌ Falhou | ⛔ Bloqueado | Achados | Observações |
 |---|---|---|---|---|---|
-| 32 | 27 | 5 | 0 | 6 (alta 2 · média 1 · baixa 3) | 7 |
+| 36 | 31 | 5 | 0 | 6: 3 defeitos confirmados · 1 divergência · 2 a confirmar (severidade: alta 2 · média 1 · baixa 3) | 7 |
 
-**Automação**
-- **Playwright (interface):** 17 testes. 16 passam e 1 é falha esperada (`test.fail`) que documenta o BUG01. Quando o bug for corrigido, esse teste passa a acusar e a marcação deve ser retirada.
-- **Postman/Newman (API):** 46 requisições e 272 asserções. 39 requisições passam; as 7 que falham são exatamente as marcadas com `[BUG01]`, `[BUG02]`, `[BUG04]` e `[BUG05]`. Relatório: [evidencias/api/relatorio-newman.html](evidencias/api/relatorio-newman.html) (baixe e abra no navegador).
+**Automação** (última execução: 09/10/2026)
+- **Validação do Gherkin:** `docs/02-cenarios.feature` passa no parser oficial (`@cucumber/gherkin`, idioma pt), com 6 regras e 36 cenários.
+- **Playwright (interface):** 24 testes, 24 passam e 0 falham, sem testes instáveis. Não há `test.fail()`. O BUG01 tem um teste próprio, no bloco "Bugs conhecidos", que afirma o comportamento atual (frete cobrado com R$ 200,00). Ele passa enquanto o bug existir e falha quando o bug for corrigido. Assim, um erro de navegação ou de tela nunca é confundido com "falha esperada".
+- **Postman/Newman (API):** 48 requisições e 289 asserções. Falham 7 requisições, todas marcadas com `[BUG01]`, `[BUG02]`, `[BUG04]` ou `[BUG05]`, e há 0 falhas inesperadas. O `scripts/api.mjs` aplica essa política: qualquer falha fora dos bugs conhecidos, ou um bug conhecido que passe a funcionar, reprova a execução. Relatório: [evidencias/api/relatorio-newman.html](evidencias/api/relatorio-newman.html) (baixe e abra no navegador).
 
-Os dados estruturados desta execução estão em [resultados.json](resultados.json).
+A fonte oficial destes resultados é o [resultados.json](resultados.json). As contagens acima são calculadas a partir dele pelo `scripts/gerar-dados-painel.py`, que também confere se o Gherkin, os bugs e as evidências estão consistentes entre si.
 
 ## 3.2 Cenários executados
 
@@ -37,7 +38,7 @@ Os dados estruturados desta execução estão em [resultados.json](resultados.js
 | CT06 | Cupom expirado mostra "Cupom expirado." | CA04 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT06_cupom_verao2026.png) · [2](evidencias/api/relatorio-newman.html) |
 | CT07 | Campo vazio pede para informar um cupom | CA03 | Baixa | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT07_cupom_vazio.png) |
 | CT08 | Apenas um cupom por vez | CA05 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT08_um_cupom_por_vez.png) |
-| CT09 | Remover o cupom e aplicar outro | CA05 | Média | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT09_trocar_cupom.png) |
+| CT09 | Remover o cupom e aplicar outro, sem desconto residual | CA05 | Média | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT09_trocar_cupom.png) |
 | CT10 | Carrinho sem cupom não tem desconto | CA01 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT11 | Pedido com cupom inválido ou expirado é recusado (422) | CA03, CA04 | Alta | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT12 | Valor-limite do frete grátis (R$ 199,80 / 200,00 / 219,80) | CA06 | Alta | UI + API | Playwright + Postman | ❌ Falhou | [BUG01](04-bugs.md#bug01) | [1](evidencias/ui/CT12_BUG01_frete_200.png) · [2](evidencias/ui/BUG01_200_com_cupom.png) · [3](evidencias/api/relatorio-newman.html) |
@@ -47,7 +48,7 @@ Os dados estruturados desta execução estão em [resultados.json](resultados.js
 | CT16 | Fórmula do total em 40 carrinhos aleatórios | CA01, CA06, CA09 | Alta | API | Script | ✅ Passou | — | Saída do script na seção 3.4 |
 | CT17 | Arredondamento em 2 casas decimais | CA11 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT18 | Interface limita 5 unidades por produto | CA10 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT18_limite_vitrine.png) · [2](evidencias/ui/CT18_limite_carrinho.png) |
-| CT19 | API recusa mais de 5 unidades | CA10 | Alta | API | Postman | ❌ Falhou | [BUG02](04-bugs.md#bug02) | [1](evidencias/api/relatorio-newman.html) |
+| CT19 | API aplica o limite de 5 unidades a cada produto | CA10 | Alta | API | Postman | ❌ Falhou | [BUG02](04-bugs.md#bug02) | [1](evidencias/api/relatorio-newman.html) |
 | CT20 | Quantidade inválida (0, -1, 1.5, texto, ausente) | CA10 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT21 | Listar produtos | — | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT22 | Consultar um produto (200 / 404) | — | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
@@ -57,10 +58,14 @@ Os dados estruturados desta execução estão em [resultados.json](resultados.js
 | CT26 | Dados do cliente inválidos bloqueiam o pedido na tela | RE01, RE02, RE03 | Média | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT26_validacao_cliente.png) |
 | CT27 | Dados do cliente inválidos na API | RE01, RE02, RE03 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT28 | CEP com ou sem hífen é aceito | RE03 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
-| CT29 | Valores da tela iguais aos da API | CA01, CA06 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT29_tela_igual_api.png) |
+| CT29 | Tela, API e regra de negócio chegam aos mesmos valores | CA01, CA06 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT29_tela_igual_api.png) |
 | CT30 | Comunicação da promoção na home segue a regra | CA01 | Média | UI | Manual | ❌ Falhou | [BUG03](04-bugs.md#bug03) | [1](evidencias/ui/BUG03_banner_primeira_compra.png) |
 | CT31 | Cupom é removido quando o carrinho fica vazio | CA05 | Baixa | UI | Manual | ❌ Falhou | [BUG06](04-bugs.md#bug06) | [1](evidencias/ui/BUG06_1_carrinho_vazio.png) · [2](evidencias/ui/BUG06_2_cupom_continua_aplicado.png) · [3](evidencias/ui/BUG06_3_esvaziar_remove_cupom.png) |
 | CT32 | Casos de borda de nome e e-mail | RE01, RE02 | Baixa | API | Postman | ❌ Falhou | [BUG04](04-bugs.md#bug04), [BUG05](04-bugs.md#bug05) | [1](evidencias/api/relatorio-newman.html) |
+| CT33 | Alterar a quantidade com o cupom aplicado recalcula tudo | CA01, CA07 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT33_quantidade_com_cupom.png) |
+| CT34 | Remover um produto com o cupom aplicado recalcula tudo | CA01, CA06 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT34_remover_produto_com_cupom.png) |
+| CT35 | Recarregar a página mantém o carrinho e o cupom da aba | CA05 | Média | UI | Playwright | ✅ Passou | — | Relatório do Playwright |
+| CT36 | Pedido recusado pela API (422 / 500) não mostra confirmação | CA03, CA04 | Média | UI | Playwright (API simulada) | ✅ Passou | — | [1](evidencias/ui/CT36_pedido_recusado.png) |
 
 ## 3.3 Testes exploratórios
 

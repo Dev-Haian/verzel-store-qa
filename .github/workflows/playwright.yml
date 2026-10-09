@@ -6,7 +6,25 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Política de resultado (detalhes no README, seção "Limitações conhecidas da suíte"):
+# - Bugs conhecidos são marcados explicitamente nos testes ([BUGxx] no Postman, describe "Bugs conhecidos" no Playwright).
+# - Qualquer falha fora dessa lista, ou um bug conhecido que passe a se comportar diferente, deixa o pipeline vermelho.
+# - Nenhum passo usa continue-on-error.
+
 jobs:
+  gherkin:
+    name: Cenários (Gherkin)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint:gherkin
+
   ui:
     name: Interface (Playwright)
     runs-on: ubuntu-latest
@@ -19,7 +37,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test --project=ui
+      - run: npm run test:ui
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -38,13 +56,12 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      # As requisições marcadas com [BUGxx] falham enquanto os bugs estiverem abertos (ver docs/04-bugs.md).
-      # Por isso o passo não interrompe o pipeline; o relatório mostra o resultado de cada asserção.
+      # scripts/api.mjs cria reports/, roda a collection e só aprova se as únicas falhas forem as dos bugs abertos.
       - run: npm run test:api
-        continue-on-error: true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: newman-report
           path: reports/
+          if-no-files-found: error
           retention-days: 14

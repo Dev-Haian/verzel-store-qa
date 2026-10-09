@@ -54,4 +54,30 @@ test.describe('Checkout', () => {
     await expect(page).toHaveURL(/\/checkout$/);
     expect(chamouPedido).toBe(false);
   });
+
+  // A API real só recusaria o cupom no pedido se a tela deixasse passar um cupom ruim, o que ela
+  // não faz. Para testar o tratamento de erro da tela, a resposta de /api/pedidos é simulada.
+  for (const [rotulo, status, corpo, mensagem] of [
+    ['422 CUPOM_EXPIRADO', 422, { erro: { codigo: 'CUPOM_EXPIRADO', mensagem: 'Cupom expirado.', campo: 'cupom' } }, 'Cupom expirado.'],
+    ['500 do servidor', 500, 'erro interno', 'Não foi possível confirmar o pedido. Tente novamente.'],
+  ] as const) {
+    test(`CT36 · pedido recusado pela API (${rotulo}) não mostra confirmação`, async ({ page }, testInfo) => {
+      await page.route('**/api/pedidos', (r) =>
+        r.fulfill({ status, contentType: 'application/json', body: typeof corpo === 'string' ? corpo : JSON.stringify(corpo) }),
+      );
+      await loja.preencherCliente('Maria Silva', 'maria@exemplo.com', '01310-100');
+      await Promise.all([page.waitForResponse('**/api/pedidos'), loja.confirmarPedido()]);
+
+      await expect(page.getByRole('alert')).toHaveText(mensagem);
+      await expect(page).toHaveURL(/\/checkout$/);
+      await expect(page.getByText('Pedido confirmado', { exact: true })).toHaveCount(0);
+      if (status === 422) await evidencia(page, testInfo, 'CT36_pedido_recusado');
+
+      // O carrinho continua intacto, com o item e o cupom.
+      await page.unroute('**/api/pedidos');
+      await loja.abrirCarrinho();
+      await expect(loja.areaCupom).toContainText('Cupom BEMVINDO10 aplicado.');
+      await expect(loja.valor('total')).toHaveText('R$ 215,73');
+    });
+  }
 });

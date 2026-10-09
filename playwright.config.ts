@@ -10,7 +10,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   // Poucos workers: o ambiente é compartilhado com outros candidatos.
   workers: 2,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [['list'], ['html', { open: 'never' }], ['json', { outputFile: 'reports/playwright.json' }]],
   use: {
     baseURL: BASE_URL,
     trace: 'retain-on-failure',
