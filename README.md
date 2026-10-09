@@ -24,7 +24,7 @@ Validação da entrega **VZS-142 · cupom de desconto + frete grátis** da Verze
 
 [![Painel de resultados dos testes](docs/painel.png)](https://verzel-store-qa-painel.lovable.app)
 
-O painel lê os dados direto deste repositório ([docs/resultados.json](docs/resultados.json)) e os prints de [docs/evidencias/](docs/evidencias/). Qualquer atualização feita aqui aparece lá automaticamente. Os documentos abaixo trazem o mesmo conteúdo com o detalhamento completo.
+O painel foi feito com o **Lovable** e serve só para exibir os resultados. Ele lê os dados direto deste repositório ([docs/resultados.json](docs/resultados.json)) e os prints de [docs/evidencias/](docs/evidencias/). Qualquer atualização feita aqui aparece lá automaticamente. Os documentos abaixo trazem o mesmo conteúdo com o detalhamento completo.
 
 ## Resumo da execução
 

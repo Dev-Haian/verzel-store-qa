@@ -12,7 +12,7 @@ As regras do teste permitem o uso de IA, desde que informado. Usei o **Claude** 
 | Execução na interface | Sim | O Claude automatizou e executou os fluxos com Playwright e capturou as evidências. Conferi os prints e repeti os principais bugs manualmente na loja. |
 | Report dos bugs | Sim | O Claude redigiu os reports a partir dos resultados. Revisei a severidade, a prioridade e a recomendação final. |
 | Automação (Playwright + Postman) | Sim | O Claude escreveu os testes. Revisei, rodei localmente e no GitHub Actions. |
-| Painel de resultados ([link](https://verzel-store-qa-painel.lovable.app)) | Sim | Construído com o Lovable a partir do `docs/resultados.json`, com o prompt escrito pelo Claude. Os dados exibidos são lidos do repositório. |
+| Exibição dos resultados: painel ([link](https://verzel-store-qa-painel.lovable.app)) | Sim (Lovable) | Usei o **Lovable** para criar o painel que exibe os resultados: visão geral, cenários, bugs, observações, evidências e automação. O prompt foi escrito com apoio do Claude. O painel só exibe dados: lê o `docs/resultados.json` e as evidências direto deste repositório, sem cálculo ou alteração dos resultados. |
 | Revisão final | Sim, em conjunto | Revisão cruzada das entregas antes do envio. |
 
 **O que eu garanti:** cada bug foi reproduzido por mim na loja ou no Postman antes de entrar no repositório, e as interpretações das ambiguidades (docs/01, seção 1.4) são decisões minhas.
