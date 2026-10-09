@@ -99,6 +99,12 @@ for b in res["bugs"]:
     if not any(b["id"] in c["bugs"] for c in res["cenarios"]):
         erros.append(f"{b['id']} não está ligado a nenhum cenário")
 
+res["automacao"]["gherkin"] = {
+    "valido": True,  # conferido por npm run lint:gherkin (job "Cenários (Gherkin)" no CI)
+    "regras": len(re.findall(r"^\s*Regra:", feat, re.M)),
+    "cenarios": len(blocos),
+}
+
 # ---------- resumo calculado (nunca editado à mão) ----------
 cen = res["cenarios"]
 sev = lambda s: sum(1 for b in res["bugs"] if b["severidade"] == s)

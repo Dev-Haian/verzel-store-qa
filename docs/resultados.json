@@ -3,7 +3,7 @@
   "card": "VZS-142",
   "versao": "2.3.0",
   "ambiente": "https://verzel-store.qa-test-verzel-store.workers.dev",
-  "executadoEm": "2026-10-08",
+  "executadoEm": "2026-10-09",
   "executadoPor": "Haian Vilas Boas",
   "resumo": {
     "cenarios": 36,
@@ -41,6 +41,11 @@
       "falhasInesperadas": 0,
       "veredito": "passou",
       "nota": "Só falham as requisições marcadas com [BUGxx]; qualquer outra falha deixa o pipeline vermelho (scripts/api.mjs)."
+    },
+    "gherkin": {
+      "valido": true,
+      "regras": 6,
+      "cenarios": 36
     }
   },
   "cenarios": [
