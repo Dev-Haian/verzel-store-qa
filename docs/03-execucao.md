@@ -45,7 +45,7 @@ A fonte oficial destes resultados é o [resultados.json](resultados.json). As co
 | CT13 | Abaixo de R$ 200,00 informa quanto falta | CA07 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT13_faltante_frete.png) · [2](evidencias/api/relatorio-newman.html) |
 | CT14 | Frete grátis usa o subtotal antes do desconto | CA08 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/ui/CT14_frete_antes_do_desconto.png) · [2](evidencias/api/relatorio-newman.html) |
 | CT15 | Desconto não incide sobre o frete | CA09 | Alta | UI + API | Playwright + Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
-| CT16 | Fórmula do total em 40 carrinhos aleatórios | CA01, CA06, CA09 | Alta | API | Script | ✅ Passou | — | Saída do script na seção 3.4 |
+| CT16 | Fórmula do total em 40 carrinhos aleatórios | CA01, CA06, CA09 | Alta | API | Playwright (`tests/api`) | ✅ Passou | — | Saída do script na seção 3.4 |
 | CT17 | Arredondamento em 2 casas decimais | CA11 | Média | API | Postman | ✅ Passou | — | [1](evidencias/api/relatorio-newman.html) |
 | CT18 | Interface limita 5 unidades por produto | CA10 | Alta | UI | Playwright | ✅ Passou | — | [1](evidencias/ui/CT18_limite_vitrine.png) · [2](evidencias/ui/CT18_limite_carrinho.png) |
 | CT19 | API aplica o limite de 5 unidades a cada produto | CA10 | Alta | API | Postman | ❌ Falhou | [BUG02](04-bugs.md#bug02) | [1](evidencias/api/relatorio-newman.html) |
@@ -101,4 +101,6 @@ Sessões curtas com um objetivo (charter). Cada uma gerou cenários novos ou bug
 | Checkout → confirmação (CT25) | 215,73 | `/pedidos` 201 · 215.73 | ✅ |
 
 **CT16 · 40 carrinhos aleatórios:** gerei 40 carrinhos (1 a 4 produtos, 1 a 5 unidades, com e sem cupom) e comparei subtotal, desconto, frete, faltante e total da API com um cálculo independente em decimal (arredondamento meio para cima). Resultado: **0 diferenças**. Nenhum carrinho caiu exatamente em R$ 200,00, por isso o CT12 cobre esse ponto separadamente.
+
+> **Atualização pós-feedback (14/10):** na entrega original o CT16 foi rodado por um script exploratório que não ficou versionado. Ele agora está em [`tests/api/ct16-carrinhos-aleatorios.spec.ts`](../tests/api/ct16-carrinhos-aleatorios.spec.ts): carrinhos gerados por **seed** (reproduzíveis), comparação com o mesmo `calcularEsperado` em centavos dos testes de interface e fronteiras fixas (R$ 199,80, R$ 200,00 com o BUG01 e R$ 219,80). Roda no CI com seed fixa (`npm run test:ct16`) e uma vez por dia com seed aleatória (`.github/workflows/ct16-diario.yml`).
 

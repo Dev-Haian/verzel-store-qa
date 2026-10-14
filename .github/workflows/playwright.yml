@@ -65,3 +65,17 @@ jobs:
           path: reports/
           if-no-files-found: error
           retention-days: 14
+
+  ct16:
+    name: API · CT16 (Playwright, seed fixa)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Seed fixa (padrão do teste): o resultado do PR é determinístico.
+      - run: npm run test:ct16

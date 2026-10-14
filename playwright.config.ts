@@ -19,6 +19,11 @@ export default defineConfig({
   },
   projects: [
     {
+      // Testes de API em TypeScript (CT16, baseado em propriedades). O restante da API roda no Postman/Newman.
+      name: 'api',
+      testDir: './tests/api',
+    },
+    {
       name: 'ui',
       testDir: './tests/ui',
       use: {

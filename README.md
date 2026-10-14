@@ -72,6 +72,7 @@ npm test                    # valida o Gherkin, roda a interface e depois a API
 npm run lint:gherkin        # valida docs/02-cenarios.feature no parser oficial do Gherkin
 npm run test:ui             # só a interface (Playwright)
 npm run test:api            # só a API (collection do Postman via Newman)
+npm run test:ct16           # CT16: carrinhos aleatórios com seed (CT16_SEED=123 para reproduzir)
 npm run test:headed         # interface com o navegador aberto
 npm run report              # abre o relatório HTML do Playwright
 npm run evidencias          # roda a interface e salva os prints em docs/evidencias/ui

@@ -1,0 +1,36 @@
+name: CT16 diário (seed aleatória)
+
+# Explora combinações novas uma vez por dia, sem bloquear PRs.
+# Se falhar, a seed aparece no log e na anotação do teste: rode localmente com
+#   CT16_SEED=<seed> npm run test:ct16
+# e, confirmado o problema, transforme o carrinho em caso fixo na suíte.
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: 'Seed (vazio = aleatória)'
+        required: false
+
+jobs:
+  ct16:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Define a seed
+        run: echo "CT16_SEED=${{ github.event.inputs.seed || github.run_id }}" >> "$GITHUB_ENV"
+      - run: echo "Rodando o CT16 com CT16_SEED=$CT16_SEED"
+      - run: npm run test:ct16
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ct16-relatorio
+          path: playwright-report/
+          retention-days: 14

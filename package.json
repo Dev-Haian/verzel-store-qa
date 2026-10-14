@@ -4,14 +4,15 @@
   "private": true,
   "description": "Teste técnico de QA: validação de cupom de desconto e frete grátis na Verzel Store",
   "scripts": {
-    "test": "npm run lint:gherkin && npm run test:ui && npm run test:api",
+    "test": "npm run lint:gherkin && npm run test:ui && npm run test:api && npm run test:ct16",
     "test:ui": "playwright test --project=ui",
     "test:headed": "playwright test --project=ui --headed",
     "test:api": "node scripts/api.mjs",
     "lint:gherkin": "node scripts/validar-gherkin.mjs",
     "evidencias": "cross-env EVIDENCIAS=1 playwright test --project=ui",
     "painel:dados": "python3 scripts/gerar-dados-painel.py",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "test:ct16": "playwright test --project=api"
   },
   "author": "Haian Vilas Boas",
   "license": "MIT",
